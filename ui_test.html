@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en" class="">
+<head>
+  <!-- Imports  -->
+  <div>
+      <!-- Required meta tags -->
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+      <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+      <title>Sidestep</title>
+  </div>
+
+  <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2|Open+Sans&display=swap" rel="stylesheet">
+
+  <!--  Stylesheet  -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+    <body onload="setup();">
+
+    <!-- Constants -->
+    <script type="text/javascript">
+        var SAFETY_LEVELS = [
+            ["Safe", 100],
+            ["Risky", 25],
+            ["Dangerous", 5]
+        ]
+
+        var LOCATION_TYPES = [
+            ["Any", "Any"],
+            ["Fun", "Fun"]
+        ]
+
+        var UNIT_MULTIPLIERS = [
+            ["km", 1],
+            ["miles", 0.62137]
+        ]
+
+        var TESTING_SEARCH_RESULTS = [
+            ["Acme Hardware", 15, "Here is some random information", "https://maps.google.com"],
+            ["Happy Days Barbershop", 29, "Here is some random information", "https://maps.google.com"],
+            ["Bed Co", 32, "Here is some random information", "https://maps.google.com"],
+            ["Nick-Knack-Snorting-Crack", 47, "Here is some random information", "https://maps.google.com"]
+        ]
+    </script>
+
+    <script type="text/javascript">
+        function setup() {
+            // Creates the dropdown for safety levels
+            fnCreateDropdown("input", SAFETY_LEVELS, "pickSafety");
+            fnCreateDropdown("input", LOCATION_TYPES, "pickType");
+            fnCreateDistance("input", UNIT_MULTIPLIERS, "pickDistance", "pickMetric")
+
+            fnAllSearchResults(TESTING_SEARCH_RESULTS);
+        }
+
+        // Sets the text of the button in the dropdown
+        function fnSetParentText(event) {
+            var parent = event.target.parentElement.parentElement
+            var target = parent.querySelector('.dropdown-toggle');
+            target.innerHTML = event.target.innerHTML;
+            target.setAttribute("value", event.target.getAttribute("value"));
+        }
+
+        function fnAllSearchResults(inputArray) {
+            $("#searchResults").innerHTML = "";
+
+            for (var i = 0; i < inputArray.length; i++) {
+                fnFormatSearchResult("searchResults", inputArray[i]);
+            }
+        }
+
+        // Function that creates dropdown values programmatically
+        function fnCreateDropdown(mainParent, inputList, id) {
+            // Gets the main container
+            var container = $("#" + mainParent)[0];
+
+            // Creates an outer div
+            var dropdown = document.createElement('div');
+            dropdown.classList += "dropdown center";
+            dropdown.id = id;
+
+            // Creates a button within the outer div
+            var button = document.createElement('button');
+            button.classList += "btn btn-secondary dropdown-toggle";
+            button.id = "button-" + id;
+            button.setAttribute("type", "button");
+            button.setAttribute("data-toggle", "dropdown");
+            button.setAttribute("aria-haspopup", "true");
+            button.setAttribute("aria-expanded", "false");
+            button.setAttribute("value", inputList[0][1]);
+            button.innerHTML = inputList[0][0];
+
+            // Creates a dropdown menu within the outer div
+            var menu = document.createElement('div');
+            menu.classList += "dropdown-menu";
+            button.setAttribute("aria-labelledby", button.id);
+
+            // Populates the menu with dropdown options
+            for (var i = 0; i < inputList.length; i++) {
+                var a = document.createElement('a');
+                a.classList += "dropdown-item";
+                a.setAttribute("aria-expanded", "false");
+                a.setAttribute("value", inputList[i][1]);
+                a.addEventListener("click", fnSetParentText);
+                a.innerHTML = inputList[i][0];
+
+                // Adds as a child to the parent
+                menu.appendChild(a);
+            }
+
+            // Adding as children
+            dropdown.appendChild(button);
+            dropdown.appendChild(menu);
+
+            container.appendChild(dropdown);
+            // container.appendChild(document.createElement('div'));
+        }
+
+        function fnCreateDistance(mainParent, inputList, main_id, sub_id) {
+            // Gets the main container
+            var container = $("#" + mainParent)[0];
+
+            // Creates an outer div
+            var innerContainer = document.createElement('div');
+            innerContainer.id = "inner-" + mainParent;
+
+            var inputBar = document.createElement('input');
+            inputBar.classList += "form-control center";
+            inputBar.id = main_id;
+            inputBar.setAttribute("type", "number");
+            inputBar.setAttribute("placeholder", "Distance to Search");
+
+            innerContainer.appendChild(inputBar);
+            container.appendChild(innerContainer);
+
+            fnCreateDropdown(innerContainer.id, inputList, sub_id);
+        }
+
+        function fnToggle(e) {
+            var parent = e.target.parentNode.parentNode.parentNode;
+            var expanding = parent.querySelector('.expanded-result');
+
+            if (expanding.style.display === "none") {
+                expanding.style.display = "block";
+            } else {
+                expanding.style.display = "none";
+            }
+        }
+
+        function fnFormatSearchResult(mainParent, inputArray) {
+            var container = $("#" + mainParent)[0];
+
+            var searchResult = document.createElement("div");
+            searchResult.classList += "searchResult";
+
+            var containerHeader = document.createElement("div")
+            containerHeader.classList += "container searchResult";
+            containerHeader.addEventListener("click", fnToggle);
+
+            var row = document.createElement("div");
+            row.classList += "row";
+
+            var srName = document.createElement("div");
+            srName.classList += "col sub-searchResult sr-name";
+            srName.innerHTML = inputArray[0];
+
+            var srDistance = document.createElement("div");
+            srDistance.classList += "col-3 sub-searchResult sr-distance";
+
+            var multiplier = Number($("#button-pickMetric")[0].getAttribute("value"));
+            var unit = $("#button-pickMetric")[0].innerHTML;
+
+            srDistance.innerHTML = (inputArray[1] * multiplier).toString() + " " + unit;
+
+            var expandedResult = document.createElement("div");
+            expandedResult.classList += "container expanded-result";
+
+            var info = document.createElement("div");
+            info.classList += "sub-expanded-result info";
+            info.innerHTML += inputArray[2];
+
+            var mapsLink = document.createElement("div");
+            mapsLink.classList += "sub-expanded-result maps-link";
+
+            var link = document.createElement("a");
+            link.setAttribute("href", inputArray[3]);
+            link.setAttribute("target", "_blank");
+            link.innerHTML = "Open in Google Maps";
+
+            mapsLink.appendChild(link);
+
+            expandedResult.appendChild(info);
+            expandedResult.appendChild(mapsLink);
+
+            row.appendChild(srName);
+            row.appendChild(srDistance);
+
+            containerHeader.appendChild(row);
+
+            searchResult.appendChild(containerHeader);
+            searchResult.appendChild(expandedResult);
+
+            container.appendChild(searchResult);
+        }
+    </script>
+
+    <div class="main" id="mainContent">
+        <h1>sidestep</h1>
+
+        <div id="input">
+
+        </div>
+        <div id="searchResults">
+
+        </div>
+
+
+
+
+
+    </div>
+    </body>
+</html>
