@@ -14,6 +14,10 @@
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
         <!--    -->
 
+        <!-- CUSTOM -->
+        <script type="text/javascript" src="./coronaCalc.js"></script>
+        <!--  -->
+
     </div>
 
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?">
@@ -27,97 +31,19 @@
     </head>
 
     <!-- Body  -->
-    <body onload="grabGloData();">
+    <body onload="fnTesting();">
 
     <!-- JavaScript Functions  -->
     <!-- GOOGLE MAPS API: AIzaSyDGi2B8Bqf9Zb2SsBkzXTUzbBwDMnyvBHQ -->
 
     <script language="JavaScript">
-        //  --------------------------------------------------------------------
-        //  Grabs JSON data from global virus cases
-        //  Finds: latest data, list of locations (long, lat), last updated
-        //         and the source link.
-        function grabGloData() {
-          $.getJSON("https://coronavirus-tracker-api.herokuapp.com/confirmed", function(data) {
-
-            //  Uncomment below to print the data
-            /*
-            var text = `  Latest: ${data.latest}<br>
-                          Locations: ${JSON.stringify(data.locations)}<br>
-                          Last Updated: ${data.last_updated}<br>
-                          Source: ${data.source}}<br><br>`
-            $("#mypanel").html(text);
-            */
-
-            //  Grab user's country
-            $.get("http://ipinfo.io", function (response) {
-                var userCountry = $(response.country).selector;
-                $("#mypanel").append(`<br>`, response.country);
-
-                var results = [];
-                var searchField = "country_code";
-                var searchVal = userCountry;
-
-                //  results will hold cases of virus in user's country
-                for (var i=0 ; i < data.locations.length ; i++)
-                {
-                    if (data.locations[i][searchField] == searchVal) {
-                      results.push(data.locations[i]);
-                    }
-                }
-                console.log(results);
-
-
-            }, "jsonp");
-
-            //  TEST CORDS
-            var user_loc = ["33.787914", "-117.853104"]; // location of the circle at Chapman
-            var test_loc = ["33.57422637939453","-117.724853515625"]; // location of the circle at Chapman
-            $("#mypanel").append(user_loc);
-
-            var dist = distTwoPts(user_loc[0], user_loc[1], test_loc[0], test_loc[1], 'K');
-            $("#mypanel").append(`<br><br>Dist: `);
-            $("#mypanel").append(dist);
-
-          });
-        }
-
-        //  --------------------------------------------------------------------
-        //  Source: https://www.geodatasource.com/developers/javascript
-        //
-        //  This routine calculates the distance between two points (given the
-        //  latitude/longitude of those points). It is being used to calculate
-        //  the distance between two locations using GeoDataSource (TM)
-        //  products.
-        function distTwoPts(lat1, lon1, lat2, lon2, unit) {
-        	if ((lat1 == lat2) && (lon1 == lon2)) {
-        		return 0;
-        	}
-
-        	else {
-        		var radlat1 = Math.PI * lat1/180;
-        		var radlat2 = Math.PI * lat2/180;
-        		var theta = lon1-lon2;
-        		var radtheta = Math.PI * theta/180;
-        		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-        		if (dist > 1) {
-        			dist = 1;
-        		}
-        		dist = Math.acos(dist);
-        		dist = dist * 180/Math.PI;
-        		dist = dist * 60 * 1.1515;
-        		if (unit=="K") { dist = dist * 1.609344 }
-        		if (unit=="N") { dist = dist * 0.8684 }
-        		return dist;
-        	 }
-         }
-
-
 
     </script>
 
     <!-- id used for printing, do not delete  -->
     <p id="mypanel"></p>
+
+    <p id="demo"></p>
 
     </body>
 </html>
