@@ -1,25 +1,29 @@
-const SAFE_RADIUS = 100;
+const SAFE_RADIUS = 400;
 const TEST_LOC = ["33.787914", "-117.853104"];
-var userLocation = TEST_LOC; // Set here for testing purposes
+var userLocation = []; // Set here for testing purposes
 var relLocs = [];
 var safeLocs = [];
 var updateTime;
 var DANGER_MULTIPLER = 1;
-var dangerCutoff = 100; // this needs to be tweeked a little bit
+var dangerCutoff;
 const MtK = 0.6213712;
+var noResults;
+var searchCriteria;
 
 var PLACES_API_KEY = "T7P7ZUnoaS6UosOf7OKA_WCD5MsH8POrifNjeC8qQeA";
 
 // google maps utl format: https://www.google.com/maps/search/taco+place/@33.8073722,-117.8516195
 
 // Cleaned up version of grabbing the global data
-function fnGData() {
+function fnGData(sL, callback) {
     // Replace with some kind of loading function
     console.log("loading...");
     return $.getJSON("https://coronavirus-tracker-api.herokuapp.com/confirmed", function(data) {
         fnCleanGData(data);
     }).then(function(){
-        fnGetPlaces("Restaurant");
+        fnGetPlaces(searchCriteria, noResults).then(function() {
+            callback(sL);
+        })
     });
 }
 
@@ -51,10 +55,6 @@ function fnDisplayCleaned() {
     $.each(relLocs, function(k, v) {
         console.log(v["province"]);
     });
-}
-
-function fnTesting() {
-    fnGData();
 }
 
 // Data comes in miles >:(
@@ -94,16 +94,14 @@ function fnCleanPlaces(pd) {
         });
         if(dangerLevel < dangerCutoff) {
             var parsedItem = {};
-            parsedItem["distance"] = v1['distance']*MtK;
+            parsedItem["distance"] = (v1['distance']*MtK/1000).toFixed(1);
             parsedItem["danger"] = dangerLevel;
             parsedItem["name"] = v1["title"];
-            parsedItem["link"] = `https://www.google.com/maps/search/${v1["title"].replace(" ", "+")}/@${userLocation[0]},${userLocation[1]}`;
+            parsedItem["link"] = `https://www.google.com/maps/search/${v1["title"].replace(" ", "+")}/@${pLatLong[0]},${pLatLong[1]}`;
 
             safeLocs.push(parsedItem);
         }
     });
-
-    console.log(safeLocs);
 
     // May need this later
     // safeLocs.sort(function(a, b){return a['danger']-b['danger']});
@@ -139,17 +137,18 @@ function distTwoPts(lat1, lon1, lat2, lon2, unit) {
      }
  }
 
- function getLocation() {
-       if (navigator.geolocation) {
-         navigator.geolocation.getCurrentPosition();
-         $("#demo")[0].innerText = "Latitude: " + position.coords.latitude +
-         "\nLongitude: " + position.coords.longitude;
-       } else {
-         $("#demo")[0].innerText = "Geolocation is not supported by this browser.";
-       }
- }
+ function getLocation(sL, callback) {
+    if(userLocation.length != 0) {
+        fnGData(sL, callback);
+        return;
+    }
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+            userLocation = [position.coords.latitude, position.coords.longitude];
+            fnGData(sL, callback);
+        });
 
- function showPosition(position) {
-   $("#demo")[0].innerText = "Latitude: " + position.coords.latitude +
-   "\nLongitude: " + position.coords.longitude;
+    } else {
+       alert("We were unable to get your location");
+    }
  }

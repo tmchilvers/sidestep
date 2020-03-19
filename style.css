@@ -32,7 +32,6 @@ input {
     display: inline-block;
     margin-top: 10px;
     font-family: 'Open Sans', sans-serif;
-    /* box-shadow: 5px 5px 5px #2D3142 !important; */
 }
 
 #button-pickMetric {
@@ -53,7 +52,7 @@ input {
 }
 
 .dropdown-item {
-    font-size: 20pt !important;
+    font-size: 15pt !important;
 }
 
 .form-control {
@@ -103,7 +102,7 @@ a:active {
 }
 
 div {
-    font-size: 20px !important;
+    font-size: 15px !important;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -115,5 +114,5 @@ div {
 }
 
 #mainContent {
-    margin-bottom: 20px;
+    margin-bottom: 70px;
 }

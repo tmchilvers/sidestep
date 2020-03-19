@@ -15,13 +15,15 @@ A website to inform users of locations to meet that are a safe distance from kno
 - Implemented automated scrubbing of locations marked as too dangerous
 - Saved locations along with important data
     - Generated google maps links with string formatting
+- Merged javascript into the UI
+- Updated a few functions to work better together
 
 ## ToDo
-- Merge into interface
 - Add comments
 - Potentially clean up some code
 - Potentially subtract the number of cured from the overall infected
     - Maybe not a good idea until later because it will basically double the api call time unless run via parallel threads
+- Need to work on the metric that I'm using to search for things
 
 ## Resources
 - https://github.com/ExpDev07/coronavirus-tracker-api

@@ -3,11 +3,11 @@
 <head>
   <!-- Imports  -->
   <div>
-      <!-- Required meta tags -->
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-      <!-- Latest compiled and minified CSS -->
+    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
     <!-- jQuery library -->
@@ -16,7 +16,11 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-      <title>Sidestep</title>
+    <!-- CUSTOM -->
+    <script type="text/javascript" src="./coronaCalc.js"></script>
+    <!--  -->
+
+    <title>Sidestep</title>
   </div>
 
   <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2|Open+Sans&display=swap" rel="stylesheet">
@@ -31,13 +35,27 @@
     <script type="text/javascript">
         var SAFETY_LEVELS = [
             ["Safe", 100],
-            ["Risky", 25],
-            ["Dangerous", 5]
+            ["Risky", 200],
+            ["Dangerous", 300]
         ]
 
         var LOCATION_TYPES = [
-            ["Any", "Any"],
-            ["Fun", "Fun"]
+            ["Lodging", "accommodation"],
+            ["Admin/Gov", "administrative-areas-buildings"],
+            ["Airport", "airport"],
+            ["ATM/Bank", "atm-bank-exchange"],
+            ["Coffee", "coffee-tea"],
+            ["Food", "eat-drink"],
+            ["Going Out", "going-out"],
+            ["Hospital", "hospital-health-care-facility"],
+            ["Parks", "leisure-outdoor"],
+            ["Nature", "natural-geographical"],
+            ["Gas", "petrol-station"],
+            ["Restaurant", "restaurant"],
+            ["Fast Food", "snacks-fast-food"],
+            ["Shopping", "shopping"],
+            ["Toilet", "toilet-rest-area"],
+            ["Transit", "transport"]
         ]
 
         var UNIT_MULTIPLIERS = [
@@ -45,12 +63,14 @@
             ["miles", 0.62137]
         ]
 
-        var TESTING_SEARCH_RESULTS = [
-            ["Acme Hardware", 15, "Here is some random information", "https://maps.google.com"],
-            ["Happy Days Barbershop", 29, "Here is some random information", "https://maps.google.com"],
-            ["Bed Co", 32, "Here is some random information", "https://maps.google.com"],
-            ["Nick-Knack-Snorting-Crack", 47, "Here is some random information", "https://maps.google.com"]
-        ]
+        // var TESTING_SEARCH_RESULTS = [
+        //     ["Acme Hardware", 15, "Here is some random information", "https://maps.google.com"],
+        //     ["Happy Days Barbershop", 29, "Here is some random information", "https://maps.google.com"],
+        //     ["Bed Co", 32, "Here is some random information", "https://maps.google.com"],
+        //     ["Nick-Knack-Snorting-Crack", 47, "Here is some random information", "https://maps.google.com"]
+        // ]
+
+        const MAX_RESULTS = 100;
     </script>
 
     <script type="text/javascript">
@@ -59,8 +79,6 @@
             fnCreateDropdown("input", SAFETY_LEVELS, "pickSafety");
             fnCreateDropdown("input", LOCATION_TYPES, "pickType");
             fnCreateDistance("input", UNIT_MULTIPLIERS, "pickDistance", "pickMetric")
-
-            fnAllSearchResults(TESTING_SEARCH_RESULTS);
         }
 
         // Sets the text of the button in the dropdown
@@ -72,6 +90,9 @@
         }
 
         function fnAllSearchResults(inputArray) {
+            safeLocs.sort(function(a,b) { return a["distance"] - b["distance"];})
+
+            console.log(safeLocs);
             $("#searchResults").innerHTML = "";
 
             for (var i = 0; i < inputArray.length; i++) {
@@ -138,7 +159,28 @@
             inputBar.classList += "form-control center";
             inputBar.id = main_id;
             inputBar.setAttribute("type", "number");
-            inputBar.setAttribute("placeholder", "Distance");
+            inputBar.setAttribute("placeholder", "# Results");
+            inputBar.onkeypress = function(e){
+                if(e.keyCode == 13) {
+                    safeLocs = []
+
+                    while ($("#searchResults")[0].firstChild) {
+                        $("#searchResults")[0].removeChild($("#searchResults")[0]
+                        .firstChild);
+                    }
+
+                    if($("#pickDistance")[0].value > MAX_RESULTS) {
+                        $("#pickDistance")[0].value = MAX_RESULTS
+                    }
+                    noResults = $("#pickDistance")[0].value;
+
+                    searchCriteria = $("#button-pickType")[0].value;
+                    dangerCutoff = $("#button-pickSafety")[0].value;
+
+                    console.log(searchCriteria);
+                    getLocation(safeLocs, fnAllSearchResults);
+                }
+            };
 
             innerContainer.appendChild(inputBar);
             container.appendChild(innerContainer);
@@ -172,7 +214,7 @@
 
             var srName = document.createElement("div");
             srName.classList += "col sub-searchResult sr-name";
-            srName.innerHTML = inputArray[0];
+            srName.innerHTML = inputArray["name"];
 
             var srDistance = document.createElement("div");
             srDistance.classList += "col-3 sub-searchResult sr-distance";
@@ -180,20 +222,20 @@
             var multiplier = Number($("#button-pickMetric")[0].getAttribute("value"));
             var unit = $("#button-pickMetric")[0].innerHTML;
 
-            srDistance.innerHTML = (inputArray[1] * multiplier).toString() + " " + unit;
+            srDistance.innerHTML = (inputArray["distance"] * multiplier).toString() + " " + unit;
 
             var expandedResult = document.createElement("div");
             expandedResult.classList += "container expanded-result";
 
             var info = document.createElement("div");
             info.classList += "sub-expanded-result info";
-            info.innerHTML += inputArray[2];
+            info.innerHTML += `We estimate that the danger metric for this location is ${inputArray["danger"].toFixed(1)}`;
 
             var mapsLink = document.createElement("div");
             mapsLink.classList += "sub-expanded-result maps-link";
 
             var link = document.createElement("a");
-            link.setAttribute("href", inputArray[3]);
+            link.setAttribute("href", inputArray["link"]);
             link.setAttribute("target", "_blank");
             link.innerHTML = "Open in Google Maps";
 
