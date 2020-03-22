@@ -261,11 +261,14 @@
             searchCriteria = $("#button-pickType")[0].value;
             dangerCutoff = $("#button-pickSafety")[0].value;
 
+            $("#loaderText")[0].innerHTML = "Gathering Location Data...";
+
             getLocation(safeLocs, fnAllSearchResults);
         }
 
         function fnCreateLodingScreen() {
             $("#searchResults")[0].innerHTML = "<div class='loader'></div>";
+            $("#searchResults")[0].innerHTML += "<p id='loaderText'></p>";
         }
 
         function fnClearResults() {

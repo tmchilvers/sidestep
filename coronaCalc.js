@@ -16,11 +16,11 @@ var PLACES_API_KEY = "T7P7ZUnoaS6UosOf7OKA_WCD5MsH8POrifNjeC8qQeA";
 
 // Cleaned up version of grabbing the global data
 function fnGData(sL, callback) {
-    // Replace with some kind of loading function
-    console.log("loading...");
     return $.getJSON("https://coronavirus-tracker-api.herokuapp.com/confirmed", function(data) {
+        $("#loaderText")[0].innerHTML = "Cleaning Data...";
         fnCleanGData(data);
     }).then(function(){
+        $("#loaderText")[0].innerHTML = "Finding Safe Locations...";
         fnGetPlaces(searchCriteria, distance).then(function() {
             callback(sL);
         })
@@ -133,9 +133,10 @@ function distTwoPts(lat1, lon1, lat2, lon2, unit) {
         fnGData(sL, callback);
         return;
     }
-    if (navigator.geolocation) {
+    else if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             userLocation = [position.coords.latitude, position.coords.longitude];
+            $("#loaderText")[0].innerHTML = "Gathering Global Data...";
             fnGData(sL, callback);
         });
 
