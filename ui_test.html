@@ -162,6 +162,13 @@
             var btnButton = document.createElement("div");
             btnButton.classList += "col-7 btnButton";
 
+            console.log($(window).width());
+
+            if($(window).width() < 400) {
+                btnInstruction.classList += "min";
+                btnButton.classList += "min";
+            }
+
             // Creates an outer div
             var dropdown = document.createElement('div');
             dropdown.classList += "dropdown center";
@@ -349,6 +356,7 @@
 
     <div class="main" id="mainContent">
         <h1>sidestep</h1>
+        <p class="subtitle">Stay safe out there</p>
 
         <div id="input">
 
@@ -357,6 +365,9 @@
 
         </div>
 
+        <p class="bottom">
+            <a href="./help.html" target="_blank">Help</a>
+        </p>
 
 
 

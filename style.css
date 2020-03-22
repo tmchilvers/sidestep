@@ -12,8 +12,18 @@
 h1 {
     color: #fc9f53;
     font-size: 60pt;
-    margin-bottom: 20px;
     font-family: 'Baloo Chettan 2', sans-serif;
+}
+
+.subtitle {
+    margin-bottom: 20px;
+    color: white;
+}
+
+.bottom {
+    margin-top: 20px;
+    color: white;
+
 }
 
 body {
@@ -109,8 +119,18 @@ h2 {
     margin-top: 12px;
 }
 
+.btnInstruction.min {
+    text-align: center;
+    margin-top: 12px;
+}
+
 .btnButton {
     text-align: left;
+    margin-bottom: 5px;
+}
+
+.btnButton.min {
+    text-align: center;
     margin-bottom: 5px;
 }
 
