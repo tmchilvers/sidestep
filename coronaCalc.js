@@ -50,14 +50,6 @@ function fnCleanGData(gd) {
     });
 }
 
-// temp function to display what's returned
-function fnDisplayCleaned() {
-    $.each(relLocs, function(k, v) {
-        console.log(v["province"]);
-    });
-}
-
-// Data comes in miles >:(
 function fnGetPlaces(category, resultNo = 10) {
     return $.ajax({
         url: 'https://places.ls.hereapi.com/places/v1/discover/explore',
