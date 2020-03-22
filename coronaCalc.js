@@ -41,9 +41,9 @@ function fnCleanGData(gd) {
             parsedItem["lat"] = v["coordinates"]["lat"];
             parsedItem["long"] = v["coordinates"]["long"];
 
-            var bodyCount = 0;
-            $.each(v['history'], function(ks, vs) { bodyCount += Number(vs); });
-            parsedItem["infected"] = bodyCount;
+            // var bodyCount = 0;
+            // $.each(v['history'], function(ks, vs) { bodyCount += Number(vs); });
+            parsedItem["infected"] = v['latest'];
 
             relLocs.push(parsedItem);
         }
