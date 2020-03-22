@@ -7,12 +7,12 @@ var updateTime;
 var DANGER_MULTIPLER = 1;
 var dangerCutoff;
 const MtK = 0.6213712;
-var noResults;
+var distance;
 var searchCriteria;
 
 var PLACES_API_KEY = "T7P7ZUnoaS6UosOf7OKA_WCD5MsH8POrifNjeC8qQeA";
 
-// google maps utl format: https://www.google.com/maps/search/taco+place/@33.8073722,-117.8516195
+// google maps utl format: https://www.google.com/maps/search/place+name/@lat,long
 
 // Cleaned up version of grabbing the global data
 function fnGData(sL, callback) {
@@ -21,7 +21,7 @@ function fnGData(sL, callback) {
     return $.getJSON("https://coronavirus-tracker-api.herokuapp.com/confirmed", function(data) {
         fnCleanGData(data);
     }).then(function(){
-        fnGetPlaces(searchCriteria, noResults).then(function() {
+        fnGetPlaces(searchCriteria, distance).then(function() {
             callback(sL);
         })
     });
@@ -63,10 +63,9 @@ function fnGetPlaces(category, resultNo = 10) {
         url: 'https://places.ls.hereapi.com/places/v1/discover/explore',
         type: 'GET',
         data: {
-            at: `${userLocation[0]},${userLocation[1]}`,
+            at: `${userLocation[0]},${userLocation[1]};r=${resultNo*1000}`,
             cat: category,
-            apiKey: PLACES_API_KEY,
-            size: resultNo.toString()
+            apiKey: PLACES_API_KEY
         },
         beforeSend: function(xhr){
             xhr.setRequestHeader('Accept', 'application/json');
@@ -94,7 +93,7 @@ function fnCleanPlaces(pd) {
         });
         if(dangerLevel < dangerCutoff) {
             var parsedItem = {};
-            parsedItem["distance"] = (v1['distance']*MtK/1000).toFixed(1);
+            parsedItem["distance"] = (v1['distance']/1000);
             parsedItem["danger"] = dangerLevel;
             parsedItem["name"] = v1["title"];
             parsedItem["link"] = `https://www.google.com/maps/search/${v1["title"].replace(" ", "+")}/@${pLatLong[0]},${pLatLong[1]}`;

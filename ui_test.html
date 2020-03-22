@@ -63,22 +63,58 @@
             ["miles", 0.62137]
         ]
 
-        // var TESTING_SEARCH_RESULTS = [
-        //     ["Acme Hardware", 15, "Here is some random information", "https://maps.google.com"],
-        //     ["Happy Days Barbershop", 29, "Here is some random information", "https://maps.google.com"],
-        //     ["Bed Co", 32, "Here is some random information", "https://maps.google.com"],
-        //     ["Nick-Knack-Snorting-Crack", 47, "Here is some random information", "https://maps.google.com"]
-        // ]
+        var ORDER_BY = [
+            ["Asc Dist", 0],
+            ["Desc Dist", 1],
+            ["Asc Danger", 2],
+            ["Desc Danger", 3],
+            ["Asc Name", 4],
+            ["Desc Name", 5]
+        ]
 
-        const MAX_RESULTS = 100;
+        var DISPLAY_TEXT = {
+            "pickSafety":"Safety Level",
+            "pickType":"Category",
+            "pickMetric":"Units",
+            "pickOrder":"Sorting"
+        }
+
+        var DISTANCE_MESSAGE = "Distance";
+
+        const MAX_DISTANCE = 100;
+
+        function sortingFunctions(a,b,f) {
+            switch (f) {
+                case 0:
+                    return a["distance"] - b["distance"];
+                case 1:
+                    return b["distance"] - a["distance"];
+                case 2:
+                    return a['danger'] - b['danger'];
+                case 3:
+                    return b['danger'] - a['danger'];
+                case 4:
+                    if (a['name'] > b['name']) { return -1; }
+                    if (b['name'] > a['name']) { return 1; }
+                    return 0;
+                case 5:
+                    if (a['name'] < b['name']) { return -1; }
+                    if (b['name'] < a['name']) { return 1; }
+                    return 0;
+                default:
+                    return 0;
+            }
+        }
     </script>
 
     <script type="text/javascript">
         function setup() {
             // Creates the dropdown for safety levels
-            fnCreateDropdown("input", SAFETY_LEVELS, "pickSafety");
-            fnCreateDropdown("input", LOCATION_TYPES, "pickType");
-            fnCreateDistance("input", UNIT_MULTIPLIERS, "pickDistance", "pickMetric")
+            fnCreateDropdown("input", SAFETY_LEVELS, "pickSafety", DISPLAY_TEXT);
+            fnCreateDropdown("input", LOCATION_TYPES, "pickType", DISPLAY_TEXT);
+            fnCreateDropdown("input", UNIT_MULTIPLIERS, "pickMetric", DISPLAY_TEXT);
+            fnCreateDropdown("input", ORDER_BY, "pickOrder", DISPLAY_TEXT);
+            fnCreateSearchBar("input", "pickDistance", DISTANCE_MESSAGE);
         }
 
         // Sets the text of the button in the dropdown
@@ -87,13 +123,22 @@
             var target = parent.querySelector('.dropdown-toggle');
             target.innerHTML = event.target.innerHTML;
             target.setAttribute("value", event.target.getAttribute("value"));
+
+            if(safeLocs != []) {
+                fnClearResults();
+
+                if(parent.id != "pickSafety"){
+                    fnAllSearchResults(safeLocs);
+                } else {
+                    safeLocs = [];
+                }
+            }
         }
 
         function fnAllSearchResults(inputArray) {
-            safeLocs.sort(function(a,b) { return a["distance"] - b["distance"];})
+            safeLocs.sort(function(a,b){ return sortingFunctions(a,b,Number($('#button-pickOrder')[0].value)) });
 
-            console.log(safeLocs);
-            $("#searchResults").innerHTML = "";
+            fnClearResults();
 
             for (var i = 0; i < inputArray.length; i++) {
                 fnFormatSearchResult("searchResults", inputArray[i]);
@@ -101,14 +146,30 @@
         }
 
         // Function that creates dropdown values programmatically
-        function fnCreateDropdown(mainParent, inputList, id) {
+        function fnCreateDropdown(mainParent, inputList, id, textSource) {
             // Gets the main container
             var container = $("#" + mainParent)[0];
+
+            var displayGrid = document.createElement("div")
+            displayGrid.classList += "container";
+
+            var row = document.createElement("div");
+            row.classList += "row";
+
+            var btnInstruction = document.createElement("div");
+            btnInstruction.classList += "col-5 btnInstruction";
+
+            var btnButton = document.createElement("div");
+            btnButton.classList += "col-7 btnButton";
 
             // Creates an outer div
             var dropdown = document.createElement('div');
             dropdown.classList += "dropdown center";
             dropdown.id = id;
+
+            // Creates a title for the given button
+            var title = document.createElement('h2');
+            title.innerHTML = textSource[id] + ":";
 
             // Creates a button within the outer div
             var button = document.createElement('button');
@@ -143,11 +204,18 @@
             dropdown.appendChild(button);
             dropdown.appendChild(menu);
 
-            container.appendChild(dropdown);
-            // container.appendChild(document.createElement('div'));
+            btnInstruction.appendChild(title);
+            btnButton.appendChild(dropdown);
+
+            row.appendChild(btnInstruction);
+            row.appendChild(btnButton);
+
+            displayGrid.appendChild(row);
+
+            container.appendChild(displayGrid);
         }
 
-        function fnCreateDistance(mainParent, inputList, main_id, sub_id) {
+        function fnCreateSearchBar(mainParent, main_id, message) {
             // Gets the main container
             var container = $("#" + mainParent)[0];
 
@@ -159,33 +227,52 @@
             inputBar.classList += "form-control center";
             inputBar.id = main_id;
             inputBar.setAttribute("type", "number");
-            inputBar.setAttribute("placeholder", "# Results");
+            inputBar.setAttribute("placeholder", message);
             inputBar.onkeypress = function(e){
                 if(e.keyCode == 13) {
-                    safeLocs = []
-
-                    while ($("#searchResults")[0].firstChild) {
-                        $("#searchResults")[0].removeChild($("#searchResults")[0]
-                        .firstChild);
-                    }
-
-                    if($("#pickDistance")[0].value > MAX_RESULTS) {
-                        $("#pickDistance")[0].value = MAX_RESULTS
-                    }
-                    noResults = $("#pickDistance")[0].value;
-
-                    searchCriteria = $("#button-pickType")[0].value;
-                    dangerCutoff = $("#button-pickSafety")[0].value;
-
-                    console.log(searchCriteria);
-                    getLocation(safeLocs, fnAllSearchResults);
+                    fnSearchSafeLocs();
                 }
             };
 
-            innerContainer.appendChild(inputBar);
-            container.appendChild(innerContainer);
+            var searchButton = document.createElement('button');
+            searchButton.classList += "btn btn-secondary";
+            searchButton.id = "searchButton";
+            searchButton.setAttribute("type", "button");
+            searchButton.innerHTML = "Search";
+            searchButton.onclick = fnSearchSafeLocs;
 
-            fnCreateDropdown(innerContainer.id, inputList, sub_id);
+            innerContainer.appendChild(inputBar);
+            innerContainer.appendChild(searchButton);
+            container.appendChild(innerContainer);
+        }
+
+        function fnSearchSafeLocs() {
+            safeLocs = []
+
+            fnClearResults();
+
+            fnCreateLodingScreen();
+
+            if($("#pickDistance")[0].value > MAX_DISTANCE) {
+                $("#pickDistance")[0].value = MAX_DISTANCE
+            }
+            distance = $("#pickDistance")[0].value*$("#pickMetric")[0].value;
+
+            searchCriteria = $("#button-pickType")[0].value;
+            dangerCutoff = $("#button-pickSafety")[0].value;
+
+            getLocation(safeLocs, fnAllSearchResults);
+        }
+
+        function fnCreateLodingScreen() {
+            $("#searchResults")[0].innerHTML = "<div class='loader'></div>";
+        }
+
+        function fnClearResults() {
+            while ($("#searchResults")[0].firstChild) {
+                $("#searchResults")[0].removeChild($("#searchResults")[0]
+                .firstChild);
+            }
         }
 
         function fnToggle(e) {
@@ -204,10 +291,10 @@
 
             var searchResult = document.createElement("div");
             searchResult.classList += "searchResult";
+            searchResult.onclick = fnToggle;
 
             var containerHeader = document.createElement("div")
             containerHeader.classList += "container searchResult";
-            containerHeader.addEventListener("click", fnToggle);
 
             var row = document.createElement("div");
             row.classList += "row";
@@ -222,10 +309,11 @@
             var multiplier = Number($("#button-pickMetric")[0].getAttribute("value"));
             var unit = $("#button-pickMetric")[0].innerHTML;
 
-            srDistance.innerHTML = (inputArray["distance"] * multiplier).toString() + " " + unit;
+            srDistance.innerHTML = (inputArray["distance"] * multiplier).toFixed(1) + " " + unit;
 
             var expandedResult = document.createElement("div");
             expandedResult.classList += "container expanded-result";
+            expandedResult.style.display = "none";
 
             var info = document.createElement("div");
             info.classList += "sub-expanded-result info";

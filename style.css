@@ -6,6 +6,7 @@
 
 .main {
     text-align: center;
+    max-width: 800px;
 }
 
 h1 {
@@ -13,11 +14,13 @@ h1 {
     font-size: 60pt;
     margin-bottom: 20px;
     font-family: 'Baloo Chettan 2', sans-serif;
-    /* text-shadow: 5px 5px #2D3142; */
 }
 
 body {
     background-color: #4F5D75;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .center {
@@ -26,7 +29,7 @@ body {
 }
 
 input {
-    font-size: 20pt !important;
+    font-size: 15pt !important;
     width: 50% !important;
     margin-bottom: 0px !important;
     display: inline-block;
@@ -34,14 +37,8 @@ input {
     font-family: 'Open Sans', sans-serif;
 }
 
-#button-pickMetric {
-    margin-top: -10px;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-}
-
-.dropdown-toggle {
-    font-size: 20pt !important;
+.dropdown-toggle, #searchButton {
+    font-size: 15pt !important;
     background-color: #2D3142 !important;
     padding: 6px;
     margin-left: 10px !important;
@@ -49,6 +46,20 @@ input {
     padding-left: 10px;
     border-color: #2D3142;
     font-family: 'Open Sans', sans-serif;
+}
+
+.dropdown-toggle {
+    margin-left: 12px !important;
+}
+
+h2 {
+    color: white;
+}
+
+#searchButton {
+    margin-top: -7px;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
 }
 
 .dropdown-item {
@@ -93,6 +104,16 @@ input {
     text-align: center;
 }
 
+.btnInstruction {
+    text-align: right;
+    margin-top: 12px;
+}
+
+.btnButton {
+    text-align: left;
+    margin-bottom: 5px;
+}
+
 a {
     color: #EF8354;
 }
@@ -115,4 +136,19 @@ div {
 
 #mainContent {
     margin-bottom: 70px;
+}
+
+.loader {
+  border: 5px solid white; /* Light grey */
+  border-top: 5px solid #EF8354; /* ochre */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  display: inline-block;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
