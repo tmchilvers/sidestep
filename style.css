@@ -167,7 +167,11 @@ a {
 }
 
 a:active {
-  color: #4F5D75;
+  color: #BFC0C0;
+}
+
+a:hover {
+  color: #BFC0C0;
 }
 
 div {
