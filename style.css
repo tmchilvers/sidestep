@@ -18,6 +18,18 @@ h1 {
     font-family: 'Baloo Chettan 2', sans-serif;
 }
 
+h2.help {
+    color: #fc9f53;
+    font-size: 40pt;
+    font-family: 'Baloo Chettan 2', sans-serif;
+}
+
+h3 {
+    color: white;
+    font-size: 20pt;
+    font-family: 'Baloo Chettan 2', sans-serif;
+}
+
 .subtitle {
     margin-bottom: 20px;
     color: white;
@@ -48,6 +60,19 @@ input {
     display: inline-block;
     margin-top: 10px;
     font-family: 'Open Sans', sans-serif;
+}
+
+hr {
+    width: 80%;
+    display: inline-block;
+    border-top: 1px solid #2D3142;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+}
+
+hr.main {
+    border-top: 1px solid white;
 }
 
 .dropdown-toggle, #searchButton {
@@ -178,4 +203,17 @@ div {
 
 .row:before, .row:after {
     display: inline-block;
+}
+
+p.about {
+    color: white;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 300px;
+    margin-bottom: 20px !important;
+}
+
+p.about b {
+  font-weight: bold;
 }
