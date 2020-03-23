@@ -1,146 +1,222 @@
-const SAFE_RADIUS = 400;
-const TEST_LOC = ["33.787914", "-117.853104"];
-var userLocation = []; // Set here for testing purposes
+/*
+    This file contains all of the functions that are required to make
+    calculations about the coronavirus
+*/
+
+// The maximum distance from the user that a covid-19 epicenter must be
+// to be considered by the program
+const SAFE_RADIUS = 500; //km
+
+// The user's location
+var userLocation = []; //[lat, long]
+
+// Locations that are considered close enough to be relevant
 var relLocs = [];
+
+// Locations that are considered safe
 var safeLocs = [];
-var updateTime;
-var DANGER_MULTIPLER = 1;
+
+// The time when a report was last updated
+var updateTime; // TODO: impliment this
+
+// The danger multipler, in case we decide that there needs to be some kind
+// of scaling
+const DANGER_MULTIPLER = 1;
+
+// The user-defined level of danger used as a cutoff
 var dangerCutoff;
+
+// Converting miles to kilometers
 const MtK = 0.6213712;
+
+// Search distance
 var distance;
+
+// Category being searched for
 var searchCriteria;
 
-var PLACES_API_KEY = "T7P7ZUnoaS6UosOf7OKA_WCD5MsH8POrifNjeC8qQeA";
+// Key for the places API
+const PLACES_API_KEY = "T7P7ZUnoaS6UosOf7OKA_WCD5MsH8POrifNjeC8qQeA";
 
-// google maps utl format: https://www.google.com/maps/search/place+name/@lat,long
+// API url for the coronavirus API
+const CORONA_API = "https://coronavirus-tracker-api.herokuapp.com/confirmed";
 
-// Cleaned up version of grabbing the global data
+// API url for HERE API
+const HERE_API = "https://places.ls.hereapi.com/places/v1/discover/explore";
+
+/*
+DESC:
+    Gets the global coronavirus data
+INPUT:
+    Takes in a list of safe locations as sL and a function to call after a
+    successful API call
+OUTPUT:
+    None
+*/
 function fnGData(sL, callback) {
-    return $.getJSON("https://coronavirus-tracker-api.herokuapp.com/confirmed", function(data) {
-        $("#loaderText")[0].innerHTML = "Cleaning Data...";
+    // Grabs data from the coronavirus API
+    return $.getJSON(CORONA_API, function(data) {
+        // Gives status report
+        fnSetLoadingText("Cleaning Data");
+        // Cleans the global data
         fnCleanGData(data);
+
+        // Once completed, calls the following functions
     }).then(function(){
-        $("#loaderText")[0].innerHTML = "Finding Safe Locations...";
+        // Gives status report
+        fnSetLoadingText("Finding Safe Locations");
+        // Finds the places around the user's location
         fnGetPlaces(searchCriteria, distance).then(function() {
+            // Runs the callback function
             callback(sL);
         })
     });
 }
-
-// Cleans the data to remove places that are ridiculously far away
+/*
+DESC:
+    Cleans the data to remove places from the coronavirus dataset that are
+    ridiculously far away
+INPUT:
+    gd as JSON of global data
+OUTPUT:
+    None
+*/
 function fnCleanGData(gd) {
     // Grabs the time the data was last updated
     updateTime = gd["last_updated"];
 
     // Removes all of the places too far away
     $.each(gd["locations"], function(k, v) {
+        // Lat and long of each location
         var recLat = v["coordinates"]["lat"];
         var recLong = v["coordinates"]["long"];
-        if(distTwoPts(recLat, recLong, TEST_LOC[0], TEST_LOC[1]) <= SAFE_RADIUS) {
+
+        // Makes sure that they're within the safe radius
+        if(distTwoPts(recLat, recLong, userLocation[0], userLocation[1]) <= SAFE_RADIUS) {
+            // Creates a new item
             var parsedItem = {};
+
+            // Save lat, long, and number of infected to the item
             parsedItem["lat"] = v["coordinates"]["lat"];
             parsedItem["long"] = v["coordinates"]["long"];
-
-            // var bodyCount = 0;
-            // $.each(v['history'], function(ks, vs) { bodyCount += Number(vs); });
             parsedItem["infected"] = v['latest'];
 
+            // Add the item to the list of locations
             relLocs.push(parsedItem);
         }
     });
 }
 
-function fnGetPlaces(category, resultNo = 10) {
+/*
+DESC:
+    Gets the places around you from the HERE API and cleans them
+INPUT:
+    Takes in the category of location to search for as category, and the
+    distance to search as diestance
+OUTPUT:
+    None
+*/
+function fnGetPlaces(category, distance) {
+    // Creates an AJAX call to the API
     return $.ajax({
-        url: 'https://places.ls.hereapi.com/places/v1/discover/explore',
+        url: HERE_API,
         type: 'GET',
         data: {
-            at: `${userLocation[0]},${userLocation[1]};r=${resultNo*1000}`,
+            // Converts from km to meters, which is what the API uses
+            at: `${userLocation[0]},${userLocation[1]};r=${distance*1000}`,
             cat: category,
             apiKey: PLACES_API_KEY
         },
         beforeSend: function(xhr){
             xhr.setRequestHeader('Accept', 'application/json');
         },
+        // If the call is successful
         success: function (data) {
+            // Clean the given results
             fnCleanPlaces(data["results"]["items"]);
         }
     });
 }
 
+/*
+DESC:
+    Takes a list of places and removes the ones that are too close to covid-19
+    epicenters
+INPUT:
+    Takes in a list of places as pd
+OUTPUT:
+    None
+*/
 function fnCleanPlaces(pd) {
+    // Creates a list of clean places
     var cleanPlaces = [];
+
+    // Cycles through each location in the places around you
     $.each(pd, function(k1,v1) {
+        // Grabs the lat and long to make it easier
         var pLatLong = v1["position"];
         var dangerLevel = 0;
 
+        // Cycles through every epicenter
         $.each(relLocs, function(k2,v2) {
+            // Calculates the distance from the given location to the given
+            // epicenter
             var distance = distTwoPts(pLatLong[0], pLatLong[1],
                 parseFloat(v2["lat"]), parseFloat(v2["long"]));
 
+            // Finds the danger level for that given location
             var dl = v2['infected'] * DANGER_MULTIPLER / distance;
 
+            // Update the danger level for that location
             if(dl > dangerLevel)
                 dangerLevel = dl;
         });
+
+        // If the danger level is low enough
         if(dangerLevel < dangerCutoff) {
+            // Save the important info from the item
             var parsedItem = {};
             parsedItem["distance"] = (v1['distance']/1000);
             parsedItem["danger"] = dangerLevel;
             parsedItem["name"] = v1["title"];
+
+            // Creates a link to google maps for easy veiwing
             parsedItem["link"] = `https://www.google.com/maps/search/${v1["title"].replace(" ", "+")}/@${pLatLong[0]},${pLatLong[1]}`;
 
+            // Push to the list of safe locations
             safeLocs.push(parsedItem);
         }
     });
-
-    // May need this later
-    // safeLocs.sort(function(a, b){return a['danger']-b['danger']});
 }
 
-//  --------------------------------------------------------------------
-//  Source: https://www.geodatasource.com/developers/javascript
-//
-//  This routine calculates the distance between two points (given the
-//  latitude/longitude of those points). It is being used to calculate
-//  the distance between two locations using GeoDataSource (TM)
-//  products.
-function distTwoPts(lat1, lon1, lat2, lon2, unit) {
-    if ((lat1 == lat2) && (lon1 == lon2)) {
-        return 0;
-    }
-
-    else {
-        var radlat1 = Math.PI * lat1/180;
-        var radlat2 = Math.PI * lat2/180;
-        var theta = lon1-lon2;
-        var radtheta = Math.PI * theta/180;
-        var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-        if (dist > 1) {
-            dist = 1;
-        }
-        dist = Math.acos(dist);
-        dist = dist * 180/Math.PI;
-        dist = dist * 60 * 1.1515;
-        if (unit=="K") { dist = dist * 1.609344 }
-        if (unit=="N") { dist = dist * 0.8684 }
-        return dist;
-     }
- }
-
- function getLocation(sL, callback) {
+/*
+DESC:
+    Gets the user's current location
+INPUT:
+    Takes in a list of safe locations as sL and a function to call as callback
+OUTPUT:
+    None
+*/
+function getLocation(sL, callback) {
+    // If we already have the user's location, don't ask for it again
     if(userLocation.length != 0) {
+        // Go straight to getting global data
         fnGData(sL, callback);
         return;
     }
     else if (navigator.geolocation) {
+        // Get the current location
         navigator.geolocation.getCurrentPosition(function(position) {
+            // Save to user location
             userLocation = [position.coords.latitude, position.coords.longitude];
-            $("#loaderText")[0].innerHTML = "Gathering Global Data...";
+            // Update the loding screen
+            fnSetLoadingText("Gathering Global Data");
+            // Get the global data
             fnGData(sL, callback);
         });
-
+    // If there's an error and you can't get the user's locaiton
     } else {
-       alert("We were unable to get your location");
+        // Send an alert
+        alert("We were unable to get your location");
     }
  }

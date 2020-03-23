@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" class="">
+<head>
+  <!-- Imports  -->
+  <div>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <!-- CUSTOM -->
+    <script type="text/javascript" src="./coronaCalc.js"></script>
+    <script type="text/javascript" src="./homeScript.js"></script>
+    <script type="text/javascript" src="./borrowedCode.js"></script>
+    <!--  -->
+
+    <title>Sidestep</title>
+  </div>
+
+  <link href="https://fonts.googleapis.com/css?family=Baloo+Chettan+2|Open+Sans&display=swap" rel="stylesheet">
+
+  <!--  Stylesheet  -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <link href="style.css" rel="stylesheet" type="text/css" />
+  </head>
+    <body onload="setup();">
+
+        <!-- Constants -->
+        <script type="text/javascript">
+            // Cutoffs for safety levels
+            var SAFETY_LEVELS = [
+                ["Safe", 100],
+                ["Risky", 200],
+                ["Dangerous", 300]
+            ]
+
+            // Location classifications for HERE API
+            var LOCATION_TYPES = [
+                ["Lodging", "accommodation"],
+                ["Admin/Gov", "administrative-areas-buildings"],
+                ["Airport", "airport"],
+                ["ATM/Bank", "atm-bank-exchange"],
+                ["Coffee", "coffee-tea"],
+                ["Food", "eat-drink"],
+                ["Going Out", "going-out"],
+                ["Hospital", "hospital-health-care-facility"],
+                ["Parks", "leisure-outdoor"],
+                ["Nature", "natural-geographical"],
+                ["Gas", "petrol-station"],
+                ["Restaurant", "restaurant"],
+                ["Fast Food", "snacks-fast-food"],
+                ["Shopping", "shopping"],
+                ["Toilet", "toilet-rest-area"],
+                ["Transit", "transport"]
+            ]
+
+            // Unit multipliers for distance
+            // (everything is processed in km or meters)
+            var UNIT_MULTIPLIERS = [
+                ["km", 1],
+                ["miles", 0.62137]
+            ]
+
+            // sorting algorithms
+            var ORDER_BY = [
+                ["Asc Dist", 0],
+                ["Desc Dist", 1],
+                ["Asc Danger", 2],
+                ["Desc Danger", 3],
+                ["Asc Name", 4],
+                ["Desc Name", 5]
+            ]
+
+            // The prompts that accompany given dropdowns
+            var DISPLAY_TEXT = {
+                "pickSafety":"Safety Level",
+                "pickType":"Category",
+                "pickMetric":"Units",
+                "pickOrder":"Sorting"
+            }
+
+            // Mesage to go inside the search bar
+            var DISTANCE_MESSAGE = "Search Radius";
+
+            // The maximum distance allowed to search in
+            const MAX_DISTANCE = 100;
+
+            /*
+            DESC:
+                A function that contains all sorting functions
+            INPUT:
+                Element a and element b as elements to sort,
+                int f as the chosen function
+            OUTPUT:
+                An int that tells whether element a is larger (1), whether
+                element b is larger (-1), or whether they are the same size (0)
+            */
+            function sortingFunctions(a,b,f) {
+                switch (f) {
+                    // Distance ascending
+                    case 0:
+                        return a["distance"] - b["distance"];
+                    // Distance descending
+                    case 1:
+                        return b["distance"] - a["distance"];
+                    // Danger level ascending
+                    case 2:
+                        return a['danger'] - b['danger'];
+                    // Danger level descending
+                    case 3:
+                        return b['danger'] - a['danger'];
+                    // Alphabetic ascending
+                    case 4:
+                        if (a['name'] > b['name']) { return -1; }
+                        if (b['name'] > a['name']) { return 1; }
+                        return 0;
+                    // Alphabetic descending
+                    case 5:
+                        if (a['name'] < b['name']) { return -1; }
+                        if (b['name'] < a['name']) { return 1; }
+                        return 0;
+                    default:
+                        return 0;
+                }
+            }
+        </script>
+
+        <!-- Main Content -->
+        <div class="main" id="mainContent">
+            <!-- Title -->
+            <h1>sidestep</h1>
+            <p class="subtitle">Stay safe out there</p>
+
+            <!-- Programmatically populated input panel -->
+            <div id="input"></div>
+            <!-- Programmatically populated search results -->
+            <div id="searchResults"></div>
+
+            <!-- Help link -->
+            <p class="bottom">
+                <a href="./help.html" target="_blank">Help</a>
+            </p>
+        </div>
+    </body>
+</html>
