@@ -27,7 +27,8 @@ A website to inform users of locations to meet that are a safe distance from kno
 - Broke off code into `homeScript.js`
 - Added comments
 - Cleaned up code
-
+- Changed colors of homepage
+- Adjusted responsive UI
 
 ## ToDo
 - Potentially subtract the number of cured from the overall infected
