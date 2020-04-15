@@ -15,7 +15,7 @@ Pallet
 
 h1 {
     color: #E8F5FF;
-    font-size: 80pt;
+    font-size: 15vmin;
     font-family: 'Baloo Chettan 2', sans-serif;
 }
 
@@ -33,7 +33,7 @@ h3 {
 
 .subtitle {
     margin-bottom: 20px;
-    font-size: 20pt;
+    font-size: 5vmin;
     color: #E8F5FF;
 }
 
@@ -77,8 +77,12 @@ hr.main {
     border-top: 1px solid white;
 }
 
+.dropdown-toggle:hover {
+    background-color: black;
+}
+
 .dropdown-toggle, #searchButton {
-    font-size: 15pt !important;
+    font-size: 3.5vmin !important;
     background-color: #1B4965 !important;
     padding: 6px;
     margin-left: 10px !important;
@@ -90,11 +94,12 @@ hr.main {
 
 .dropdown-toggle {
     margin-left: 12px !important;
+    background-color: black;
 }
 
 h2 {
     color: #1B4965;
-    font-size: 20pt;
+    font-size: 4.5vmin;
 }
 
 #searchButton {
