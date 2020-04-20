@@ -79,6 +79,8 @@ hr.main {
 
 .dropdown-toggle:hover {
     background-color: black;
+    border-color: #E8F5FF;
+    border-radius: 4px;
 }
 
 .dropdown-menu {
@@ -114,6 +116,11 @@ h2 {
     margin-right: 0px !important;
 }
 
+#searchButton:hover {
+  border-color: #E8F5FF;
+  border-radius: 4px;
+}
+
 .dropdown-item {
     font-size: 15pt !important;
     background-color: white;
@@ -136,23 +143,37 @@ h2 {
 }
 
 .container.searchResult {
-    background-color: #2D3142;
+    background-color: #1B4965;
     color: white;
     width: auto;
     margin-left: 5%;
     margin-right: 5%;
     margin-top: 10px;
     padding-bottom: 5px;
+    border-radius: 5px;
+}
+
+.sub-expanded-result.maps-link {
+  color: #1B4965;
 }
 
 .container.expanded-result {
-    background-color: #ffffff;
+    background-color: #E8F5FF;
     width: auto;
     display: none;
     margin-left: 5%;
     margin-right: 5%;
     padding-bottom: 5px;
     padding-top: 5px;
+    border-radius: 5px;
+
+    animation: animateDrop 350ms ease-in-out forwards;
+    animation-delay: -150ms;
+    transform-origin: top;
+}
+
+.container.expanded-result.maps-link {
+    animation: animate 1000ms ease-in-out forwards;;
 }
 
 .sub-searchResult {
@@ -188,7 +209,7 @@ h2 {
 }
 
 a {
-    color: #E8F5FF;
+    color: #1B4965;
 }
 
 a:active {
@@ -196,7 +217,7 @@ a:active {
 }
 
 a:hover {
-  color: #1B4965;
+  color: #EF8354;
 }
 
 div {
