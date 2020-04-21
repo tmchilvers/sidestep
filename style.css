@@ -108,12 +108,24 @@ hr.main {
   margin-left: 10px !important;
 }
 
-.icon{
+.dropdown-toggle i{
   position:absolute;
   right:18px;
   top: 2vmin;
   font-size:3.5vmin;
 }
+
+#searchButton i {
+  margin-left: 1.2vmin;
+  top: 2vmin;
+  font-size:3.5vmin;
+  transition: 0.3s;
+}
+
+#searchButton:hover i {
+  color: #EC8922;
+}
+
 
 /* icon moving */
 .dropdown-toggle i{
@@ -131,12 +143,12 @@ hr.main {
   position: absolute;
   border-left: 0.5vmin solid black;
   right: -1vmin; /* adjust this */
-  bottom: 0vmin;
+  bottom: -2vmin;
   height: 127%; /* adjust this */
 }
 
 .dropdown {
-  margin-top: 1vmin;
+  margin-top: 2vmin;
 }
 
 .dropdown-menu {
@@ -185,8 +197,10 @@ h2 {
 }
 
 #searchButton:hover {
-  border-color: #E8F5FF;
+  background-color: black;
+  border-color: black;
   border-radius: 4px;
+  color: black;
 }
 
 .dropdown-item {
@@ -204,7 +218,8 @@ h2 {
 
 .form-control {
     margin-left: 0%;
-    margin-right: 0%;
+    margin-right: 5vmin;
+    margin-top: 5vmin;
     width: auto;
 }
 
@@ -284,15 +299,15 @@ h2 {
 }
 
 a {
-    color: #1B4965;
+    color: white;
 }
 
 a:active {
-  color: #BFC0C0;
+  color: black;
 }
 
 a:hover {
-  color: #EF8354;
+  color: black;
 
 }
 
@@ -316,7 +331,7 @@ div {
 
 .loader {
   border: 5px solid white; /* Light grey */
-  border-top: 5px solid #EF8354; /* ochre */
+  border-top: 5px solid black; /* black */
   border-radius: 50%;
   width: 40px;
   height: 40px;

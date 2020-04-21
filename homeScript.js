@@ -166,14 +166,6 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
         menu.appendChild(a);
     }
 
-
-    //var icon = document.createElement("i");
-    //icon.setAttribute("class", "fas fa-chevron-left icon");
-    //button.appendChild(icon);
-
-    // button.setAttribute("class","sourceText fa fa-trash-o");
-    // $(dropdown.sourceText).append('<i class="fa fa-trash-o"></i>');
-
     // Adding as children
     dropdown.appendChild(button);
     dropdown.appendChild(menu);
@@ -233,6 +225,10 @@ function fnCreateSearchBar(mainParent, main_id, message) {
     searchButton.setAttribute("type", "button");
     searchButton.innerHTML = "Search";
     searchButton.onclick = fnSearchSafeLocs;
+
+    var icon = document.createElement("i");
+    icon.setAttribute("class", "fas fa-search icon");
+    searchButton.appendChild(icon);
 
     // Append everything together
     innerContainer.appendChild(inputBar);
