@@ -140,6 +140,8 @@ hr.main {
     animation: animateDrop 350ms ease-in-out forwards;
     animation-delay: -150ms;
     transform-origin: top;
+    position: absolute;
+    margin-left: 11px;
 }
 
 .dropdown-toggle, #searchButton {
@@ -155,7 +157,7 @@ hr.main {
     border-color: white;
     font-family: 'Open Sans', sans-serif;
     color: black;
-    width: 35vmin;
+    width: 43vmin;
     text-align: left;
 
 }
@@ -167,7 +169,7 @@ hr.main {
 }
 
 h2 {
-    color: #1B4965;
+    color: black;
     font-size: 4.5vmin;
 }
 
@@ -319,23 +321,13 @@ div {
   100% { transform: rotate(360deg); }
 }
 
-@keyframes iconMove {
-  from {
-    transform: translateX(0em);
-  }
-
-  to {
-    transform: translateX(-1em);
-  }
-}
-
 @keyframes animate {
   0%{
     opacity: 0;
     transform: rotateX(-90deg);
   }
   35%{
-    opacity: 0.8;
+    opacity: 1;
     transform: rotateX(20deg);
   }
   100%{
