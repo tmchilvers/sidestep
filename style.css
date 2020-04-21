@@ -38,8 +38,8 @@ h2.help {
 }
 
 h3 {
-    color: white;
-    font-size: 20pt;
+    color: black;
+    font-size: 2.5vmin;
     font-family: 'Baloo Chettan 2', sans-serif;
 }
 
@@ -131,10 +131,13 @@ hr.main {
   position: absolute;
   border-left: 0.5vmin solid black;
   right: -1vmin; /* adjust this */
-  bottom: 0.5vmin;
-  height: 135%; /* adjust this */
+  bottom: 0vmin;
+  height: 127%; /* adjust this */
 }
 
+.dropdown {
+  margin-top: 1vmin;
+}
 
 .dropdown-menu {
     animation: animateDrop 350ms ease-in-out forwards;
@@ -254,6 +257,11 @@ h2 {
 .btnInstruction {
     text-align: right;
     margin-top: 12px;
+}
+
+.btnInstruction h3 {
+  text-align: left;
+  margin-left: 10vmin;
 }
 
 .btnInstruction.min {

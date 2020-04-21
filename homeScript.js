@@ -13,13 +13,13 @@ OUTPUT:
 */
 function setup() {
     // Creates the dropdown for safety levels
-    fnCreateDropdown("input", SAFETY_LEVELS, "pickSafety", DISPLAY_TEXT);
+    fnCreateDropdown("input", SAFETY_LEVELS, "pickSafety", DISPLAY_TEXT, DESCR_TEXT);
     // Creates the dropdown for location types
-    fnCreateDropdown("input", LOCATION_TYPES, "pickType", DISPLAY_TEXT);
+    fnCreateDropdown("input", LOCATION_TYPES, "pickType", DISPLAY_TEXT, DESCR_TEXT);
     // Creates the dropdown for unit selection
-    fnCreateDropdown("input", UNIT_MULTIPLIERS, "pickMetric", DISPLAY_TEXT);
+    fnCreateDropdown("input", UNIT_MULTIPLIERS, "pickMetric", DISPLAY_TEXT, DESCR_TEXT);
     // Creates the dropdown for sorting
-    fnCreateDropdown("input", ORDER_BY, "pickOrder", DISPLAY_TEXT);
+    fnCreateDropdown("input", ORDER_BY, "pickOrder", DISPLAY_TEXT, DESCR_TEXT);
     // Creates the search bar and button
     fnCreateSearchBar("input", "pickDistance", DISTANCE_MESSAGE);
 }
@@ -33,6 +33,7 @@ OUTPUT:
     None
 */
 function fnSetParentText(event) {
+
     // Finds the parent of the event
     var parent = event.target.parentElement.parentElement
     // Finds the target of the event
@@ -72,6 +73,7 @@ OUTPUT:
     None
 */
 function fnAllSearchResults(inputArray) {
+
     // Sort the array on the function chosen by the pickOrder dropdown
     safeLocs.sort(function(a,b) {
         return sortingFunctions(a,b,Number($('#button-pickOrder')[0].value))
@@ -97,7 +99,7 @@ INPUT:
 OUTPUT:
     None
 */
-function fnCreateDropdown(mainParent, inputList, id, textSource) {
+function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
     // Gets the parent container
     var container = $("#" + mainParent)[0];
 
@@ -125,6 +127,10 @@ function fnCreateDropdown(mainParent, inputList, id, textSource) {
     // Creates a title for the given button
     var title = document.createElement('h2');
     title.innerHTML = textSource[id] + ":";
+
+    // Creates description for each section
+    var descr = document.createElement('h3');
+    descr.innerHTML = textDescr[id];
 
     // Creates a button within the outer div
     var button = document.createElement('button');
@@ -173,6 +179,7 @@ function fnCreateDropdown(mainParent, inputList, id, textSource) {
     dropdown.appendChild(menu);
 
     btnInstruction.appendChild(title);
+    btnInstruction.appendChild(descr);
     btnButton.appendChild(dropdown);
 
 
@@ -196,6 +203,7 @@ OUTPUT:
     None
 */
 function fnCreateSearchBar(mainParent, main_id, message) {
+
     // Gets the main container
     var container = $("#" + mainParent)[0];
 
@@ -241,6 +249,8 @@ OUTPUT:
     None
 */
 function fnSearchSafeLocs() {
+
+
     // Creates a list of safe locations
     safeLocs = []
 
@@ -326,6 +336,7 @@ OUTPUT:
     None
 */
 function fnToggle(e) {
+
     // The parent element that called it
     var parent = e.target.parentNode.parentNode.parentNode;
     // The element that should be expanding
