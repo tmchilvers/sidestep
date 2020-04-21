@@ -42,6 +42,11 @@ function fnSetParentText(event) {
     // Sets the value
     target.setAttribute("value", event.target.getAttribute("value"));
 
+    //  Creates an left arrow icon for the buttons
+    var icon = document.createElement("i");
+    icon.setAttribute("class", "fas fa-chevron-left icon");
+    target.appendChild(icon);
+
     // If there are results in safeLocs
     if(safeLocs != []) {
         // Clear the results
@@ -132,6 +137,11 @@ function fnCreateDropdown(mainParent, inputList, id, textSource) {
     button.setAttribute("value", inputList[0][1]);
     button.innerHTML = inputList[0][0];
 
+    //  Creates an left arrow icon for the buttons
+    var icon = document.createElement("i");
+    icon.setAttribute("class", "fas fa-chevron-left icon");
+    button.appendChild(icon);
+
     // Creates a dropdown menu within the outer div
     var menu = document.createElement('div');
     menu.classList += "dropdown-menu";
@@ -150,6 +160,14 @@ function fnCreateDropdown(mainParent, inputList, id, textSource) {
         menu.appendChild(a);
     }
 
+
+    //var icon = document.createElement("i");
+    //icon.setAttribute("class", "fas fa-chevron-left icon");
+    //button.appendChild(icon);
+
+    // button.setAttribute("class","sourceText fa fa-trash-o");
+    // $(dropdown.sourceText).append('<i class="fa fa-trash-o"></i>');
+
     // Adding as children
     dropdown.appendChild(button);
     dropdown.appendChild(menu);
@@ -157,8 +175,10 @@ function fnCreateDropdown(mainParent, inputList, id, textSource) {
     btnInstruction.appendChild(title);
     btnButton.appendChild(dropdown);
 
+
     row.appendChild(btnInstruction);
     row.appendChild(btnButton);
+
 
     displayGrid.appendChild(row);
 
