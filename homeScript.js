@@ -148,22 +148,49 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
     icon.setAttribute("class", "fas fa-chevron-left icon");
     button.appendChild(icon);
 
-    // Creates a dropdown menu within the outer div
-    var menu = document.createElement('div');
-    menu.classList += "dropdown-menu";
-    button.setAttribute("aria-labelledby", button.id);
 
-    // Populates the menu with dropdown options
-    for (var i = 0; i < inputList.length; i++) {
-        var a = document.createElement('a');
-        a.classList += "dropdown-item";
-        a.setAttribute("aria-expanded", "false");
-        a.setAttribute("value", inputList[i][1]);
-        a.addEventListener("click", fnSetParentText);
-        a.innerHTML = inputList[i][0];
+    //  Set a scroll bar for pickType only
+    if (id == "pickType")
+    {
+      // Creates a dropdown menu within the outer div
+      var menu = document.createElement('select');
+      menu.setAttribute("size", 10);
+      menu.classList += "dropdown-menu";
+      button.setAttribute("aria-labelledby", button.id);
 
-        // Adds as a child to the parent
-        menu.appendChild(a);
+      // Populates the menu with dropdown options
+      for (var i = 0; i < inputList.length; i++) {
+          var a = document.createElement('option'); //  must be option to work
+          a.classList += "dropdown-item";
+          a.setAttribute("aria-expanded", "false");
+          a.setAttribute("value", inputList[i][1]);
+          a.addEventListener("click", fnSetParentText);
+          a.innerHTML = inputList[i][0];
+
+          // Adds as a child to the parent
+          menu.appendChild(a);
+      }
+    }
+
+    else
+    {
+      // Creates a dropdown menu within the outer div
+      var menu = document.createElement('div');
+      menu.classList += "dropdown-menu";
+      button.setAttribute("aria-labelledby", button.id);
+
+      // Populates the menu with dropdown options
+      for (var i = 0; i < inputList.length; i++) {
+          var a = document.createElement('a');
+          a.classList += "dropdown-item";
+          a.setAttribute("aria-expanded", "false");
+          a.setAttribute("value", inputList[i][1]);
+          a.addEventListener("click", fnSetParentText);
+          a.innerHTML = inputList[i][0];
+
+          // Adds as a child to the parent
+          menu.appendChild(a);
+      }
     }
 
     // Adding as children
