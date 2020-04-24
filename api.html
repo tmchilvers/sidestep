@@ -37,6 +37,25 @@
     <!-- GOOGLE MAPS API: AIzaSyDGi2B8Bqf9Zb2SsBkzXTUzbBwDMnyvBHQ -->
 
     <script language="JavaScript">
+    var url = 'https://coronadatascraper.com/data.json';
+    var userLocation= [42.652401, -83.132561];
+    var coronaData;
+    var close = [];
+
+    function fnTesting() {
+        console.log('starting');
+        $.get( url, function(data) {
+            coronaData = data;
+            // for (var i = 0; i < data.length; i++) {
+                // console.log(coronaData[i]);
+            // }
+            console.log(coronaData[0]);
+        });
+    }
+
+    function fnCheckClose() {
+
+    }
 
     </script>
 

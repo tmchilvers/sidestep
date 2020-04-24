@@ -40,6 +40,7 @@ const PLACES_API_KEY = "T7P7ZUnoaS6UosOf7OKA_WCD5MsH8POrifNjeC8qQeA";
 
 // API url for the coronavirus API
 const CORONA_API = "https://coronavirus-tracker-api.herokuapp.com/confirmed";
+const NEW_CORONA_API = "https://coronadatascraper.com/data.json";
 
 // API url for HERE API
 const HERE_API = "https://places.ls.hereapi.com/places/v1/discover/explore";
@@ -55,7 +56,7 @@ OUTPUT:
 */
 function fnGData(sL, callback) {
     // Grabs data from the coronavirus API
-    return $.getJSON(CORONA_API, function(data) {
+    return $.getJSON(NEW_CORONA_API, function(data) {
         // Gives status report
         fnSetLoadingText("Cleaning Data");
         // Cleans the global data
@@ -82,29 +83,33 @@ OUTPUT:
     None
 */
 function fnCleanGData(gd) {
-    // Grabs the time the data was last updated
-    updateTime = gd["last_updated"];
+    for (var i = 0; i < gd.length; i++) {
+        try {
+            var recLat = gd[i].coordinates[0];
+            var recLong = gd[i].coordinates[1];
+            // Makes sure that they're within the safe radius
+            if(distTwoPts(recLat, recLong, userLocation[0], userLocation[1]) <= SAFE_RADIUS) {
+                // Creates a new item
+                var parsedItem = {};
 
-    // Removes all of the places too far away
-    $.each(gd["locations"], function(k, v) {
-        // Lat and long of each location
-        var recLat = v["coordinates"]["lat"];
-        var recLong = v["coordinates"]["long"];
+                // Save lat, long, and number of infected to the item
+                parsedItem["lat"] = recLat;
+                parsedItem["long"] = recLong;
+                parsedItem["infected"] =gd[i].cases;
 
-        // Makes sure that they're within the safe radius
-        if(distTwoPts(recLat, recLong, userLocation[0], userLocation[1]) <= SAFE_RADIUS) {
-            // Creates a new item
-            var parsedItem = {};
-
-            // Save lat, long, and number of infected to the item
-            parsedItem["lat"] = v["coordinates"]["lat"];
-            parsedItem["long"] = v["coordinates"]["long"];
-            parsedItem["infected"] = v['latest'];
-
-            // Add the item to the list of locations
-            relLocs.push(parsedItem);
+                // Add the item to the list of locations
+                relLocs.push(parsedItem);
+            }
+        } catch (e) {
+            console.log(gd[i]);
         }
-    });
+    }
+
+    // // Removes all of the places too far away
+    // $.each(gd, function(v) {
+        // Lat and long of each location
+
+    // });
 }
 
 /*
