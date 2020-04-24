@@ -287,15 +287,15 @@ h2 {
 }
 
 a.fas.fa-link {
-  font-size: 3vmin;
+  font-size: 4vmin;
   vertical-align: middle;
 }
 
 .sr-link {
     text-align: center;
     max-width: 1%;
-    top: 1.5vmin;
-    right: 1.5vmin;
+    top: 1.8vmin;
+    right: 2.5vmin;
     padding: 0px;
 }
 
@@ -338,6 +338,7 @@ a.fas.fa-link {
 
 a {
     color: black;
+    transition: 0.3s;
 }
 
 a:active {
