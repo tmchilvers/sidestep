@@ -224,14 +224,16 @@ h2 {
 }
 
 .container.searchResult {
-    background-color: #1B4965;
-    color: white;
+    background-color: white;
+    color: black;
     width: auto;
     margin-left: 5%;
     margin-right: 5%;
     margin-top: 10px;
     padding-bottom: 5px;
     border-radius: 5px;
+    border-color: black;
+    box-shadow:0px 1px 3px 0px grey;
 }
 
 .sub-expanded-result.maps-link {
@@ -261,12 +263,48 @@ h2 {
 
 }
 
+.searchRow {
+  display: flex;
+  height: 7.5vmin;
+}
+
 .sr-name, .info {
     text-align: left;
+    max-width: 90%;
+    font-size: 2.5vmin;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    top: 1vmin;
 }
 
 .sr-distance, .maps-link {
+    text-align: left;
+    font-size: 2.5vmin;
+    max-width: 15%;
+    top: 1.5vmin;
+    padding: 0px;
+}
+
+a.fas.fa-link {
+  font-size: 3vmin;
+  vertical-align: middle;
+}
+
+.sr-link {
     text-align: center;
+    max-width: 1%;
+    top: 1.5vmin;
+    right: 1.5vmin;
+    padding: 0px;
+}
+
+.sr-distance:before {
+    content: '';
+    position: absolute;
+    border-left: 0.5vmin solid black;
+    height: 70%;
+    left: -1.5vmin;
 }
 
 .btnInstruction {
@@ -299,24 +337,35 @@ h2 {
 }
 
 a {
-    color: white;
+    color: black;
 }
 
 a:active {
   color: black;
+  text-decoration: none;
+}
+
+a:visited {
+  color: black;
+  text-decoration: none;
+}
+
+a:link {
+  color: black;
+  text-decoration: none;
 }
 
 a:hover {
-  color: black;
-
+  color: #EC8922;
+  text-decoration: none;
 }
 
 div {
-    font-size: 15px !important;
+    font-size: 15px;
     font-family: 'Open Sans', sans-serif;
 }
 
-#input {
+#input, #searchResults {
     box-shadow:0px 10px 30px -2px #2D3142;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -324,6 +373,7 @@ div {
     background-color: white;
     border-radius: 5px;
 }
+
 
 #mainContent {
     margin-bottom: 70px;

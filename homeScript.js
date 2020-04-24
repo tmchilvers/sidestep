@@ -390,7 +390,7 @@ function fnFormatSearchResult(mainParent, inputArray) {
     // Creates a div to hold the search result
     var searchResult = document.createElement("div");
     searchResult.classList += "searchResult";
-    searchResult.onclick = fnToggle;
+    // searchResult.onclick = fnToggle // toggle for seeing map links
 
     // Creates a header for the search result
     // Bootstrap grid
@@ -399,7 +399,7 @@ function fnFormatSearchResult(mainParent, inputArray) {
 
     // Creates a bootstrap row
     var row = document.createElement("div");
-    row.classList += "row";
+    row.classList += "searchRow";
 
     // Creates a column div and sets the name of the location
     var srName = document.createElement("div");
@@ -412,10 +412,11 @@ function fnFormatSearchResult(mainParent, inputArray) {
 
     // Finds the units being used and displays in the correct units
     var multiplier = Number($("#button-pickMetric")[0].getAttribute("value"));
-    var unit = $("#button-pickMetric")[0].innerHTML;
+    var unit = $("#button-pickMetric")[0].textContent;
 
     srDistance.innerHTML = (inputArray["distance"] * multiplier).toFixed(1) + " " + unit;
 
+    ////////////////////////////////////////////////////////////////////////////
     // Creates the expanded result
     var expandedResult = document.createElement("div");
     expandedResult.classList += "container expanded-result";
@@ -429,25 +430,32 @@ function fnFormatSearchResult(mainParent, inputArray) {
     // Create a link to google maps
     var mapsLink = document.createElement("div");
     mapsLink.classList += "sub-expanded-result maps-link";
+    ////////////////////////////////////////////////////////////////////////////
+
+    //  Link Collumn
+    var srLink = document.createElement("div");
+    srLink.classList += "col-3 sub-searchResult sr-link";
 
     var link = document.createElement("a");
     link.setAttribute("href", inputArray["link"]);
     link.setAttribute("target", "_blank");
-    link.innerHTML = "Open in Google Maps";
+    link.setAttribute("class", "fas fa-link icon");
 
     // Append everything together
     mapsLink.appendChild(link);
+    srLink.appendChild(link);
 
-    expandedResult.appendChild(info);
-    expandedResult.appendChild(mapsLink);
+    //expandedResult.appendChild(info);
+    //expandedResult.appendChild(mapsLink);
 
     row.appendChild(srName);
     row.appendChild(srDistance);
+    row.appendChild(srLink);
 
     containerHeader.appendChild(row);
 
     searchResult.appendChild(containerHeader);
-    searchResult.appendChild(expandedResult);
+    //searchResult.appendChild(expandedResult);
 
     container.appendChild(searchResult);
 }
