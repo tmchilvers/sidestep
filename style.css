@@ -56,7 +56,7 @@ h3 {
 }
 
 body {
-    background-color: #EC8922;
+    background-color: #ffb764; /* old orange: #EC8922s */
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
@@ -287,8 +287,8 @@ h2 {
 }
 
 a.fas.fa-link {
-  font-size: 4vmin;
-  vertical-align: middle;
+    font-size: 4vmin;
+    vertical-align: middle;
 }
 
 .sr-link {
@@ -297,6 +297,28 @@ a.fas.fa-link {
     top: 1.8vmin;
     right: 2.5vmin;
     padding: 0px;
+}
+
+.circle {
+    padding: 3vmin 0vmin 0vmin 2vmin;
+    margin-right: 4vmin;
+    display: inherit;
+}
+
+.subCircle-full {
+  border: 1vmin solid black;
+  width: 2vmin;
+  border-radius: 50%;
+  height: 2vmin;
+  margin: 0.2vmin;
+}
+
+.subCircle {
+    border: 0.4vmin solid black;
+    width: 2vmin;
+    border-radius: 50%;
+    height: 2vmin;
+    margin: 0.2vmin;
 }
 
 .sr-distance:before {

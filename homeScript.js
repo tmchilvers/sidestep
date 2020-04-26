@@ -374,6 +374,11 @@ function fnToggle(e) {
     }
 }
 
+function fnToggleCirc(e) {
+
+  $(e).toggleClass("subCircle subCircle-full");
+}
+
 /*
 DESC:
     Function that creates a search result and populates it
@@ -405,6 +410,31 @@ function fnFormatSearchResult(mainParent, inputArray) {
     var srName = document.createElement("div");
     srName.classList += "col sub-searchResult sr-name";
     srName.innerHTML = inputArray["name"];
+
+    //  ------------------------------------------------------------------------
+    //  Creats a column div for the circles
+    var srCircle = document.createElement("div");
+    srCircle.classList += "circle";
+
+    //  sub circles for the circle Collumn
+    var subCircle = document.createElement("div");
+    subCircle.classList += "subCircle";
+
+    //  create 5 sub circles
+    srCircle.appendChild(subCircle);
+    srCircle.appendChild(subCircle.cloneNode(true));
+    srCircle.appendChild(subCircle.cloneNode(true));
+    srCircle.appendChild(subCircle.cloneNode(true));
+    srCircle.appendChild(subCircle.cloneNode(true));
+
+    //  save parent of the sub circles
+    var children = srCircle.childNodes;
+    var danger = inputArray["danger"].toFixed(1);
+    console.log(danger);
+    fnToggleCirc(children[0]);
+    fnToggleCirc(children[0]);
+
+    //  ------------------------------------------------------------------------
 
     // Creates a column div and sets the distance to the location
     var srDistance = document.createElement("div");
@@ -449,6 +479,7 @@ function fnFormatSearchResult(mainParent, inputArray) {
     //expandedResult.appendChild(mapsLink);
 
     row.appendChild(srName);
+    row.appendChild(srCircle);
     row.appendChild(srDistance);
     row.appendChild(srLink);
 
