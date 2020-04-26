@@ -7,6 +7,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <!-- font awesome icons -->
+    <script src="https://kit.fontawesome.com/fce1fd1b2e.js" crossorigin="anonymous"></script>
+
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
@@ -37,9 +40,9 @@
         <script type="text/javascript">
             // Cutoffs for safety levels
             var SAFETY_LEVELS = [
-                ["Safe", 100],
-                ["Risky", 200],
-                ["Dangerous", 300]
+                ["Safe", 2],
+                ["Risky", 4],
+                ["Dangerous", 5]
             ]
 
             // Location classifications for HERE API
@@ -71,12 +74,12 @@
 
             // sorting algorithms
             var ORDER_BY = [
-                ["Asc Dist", 0],
-                ["Desc Dist", 1],
-                ["Asc Danger", 2],
-                ["Desc Danger", 3],
-                ["Asc Name", 4],
-                ["Desc Name", 5]
+                ["Closest", 0],
+                ["Furthest", 1],
+                ["Safest", 2],
+                ["Dangerous", 3],
+                ["Reverse Alphabetical", 4],
+                ["Alphabetical", 5]
             ]
 
             // The prompts that accompany given dropdowns
@@ -87,11 +90,18 @@
                 "pickOrder":"Sorting"
             }
 
+            var DESCR_TEXT = {
+                "pickSafety":"The amount of risk that you’re willing to take",
+                "pickType":"The sort of business you’re looking for",
+                "pickMetric":"The usits used for measuring distance",
+                "pickOrder":"The metric used to order your search results"
+            }
+
             // Mesage to go inside the search bar
             var DISTANCE_MESSAGE = "Search Radius";
 
             // The maximum distance allowed to search in
-            const MAX_DISTANCE = 100;
+            const MAX_DISTANCE = 500;
 
             /*
             DESC:
@@ -133,11 +143,16 @@
             }
         </script>
 
+        <div class="title" id="title">
+            <h1>Sidestep</h1>
+            <p class="subtitle"></p>
+        </div>
+
         <!-- Main Content -->
         <div class="main" id="mainContent">
             <!-- Title -->
-            <h1>sidestep</h1>
-            <p class="subtitle">Stay safe out there</p>
+
+
 
             <!-- Programmatically populated input panel -->
             <div id="input"></div>

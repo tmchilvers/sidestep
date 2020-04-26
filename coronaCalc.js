@@ -21,7 +21,7 @@ var updateTime; // TODO: impliment this
 
 // The danger multipler, in case we decide that there needs to be some kind
 // of scaling
-const DANGER_MULTIPLER = 1;
+const DANGER_MULTIPLER = 0.002;
 
 // The user-defined level of danger used as a cutoff
 var dangerCutoff;
@@ -40,6 +40,7 @@ const PLACES_API_KEY = "T7P7ZUnoaS6UosOf7OKA_WCD5MsH8POrifNjeC8qQeA";
 
 // API url for the coronavirus API
 const CORONA_API = "https://coronavirus-tracker-api.herokuapp.com/confirmed";
+const NEW_CORONA_API = "https://coronadatascraper.com/data.json";
 
 // API url for HERE API
 const HERE_API = "https://places.ls.hereapi.com/places/v1/discover/explore";
@@ -55,7 +56,7 @@ OUTPUT:
 */
 function fnGData(sL, callback) {
     // Grabs data from the coronavirus API
-    return $.getJSON(CORONA_API, function(data) {
+    return $.getJSON(NEW_CORONA_API, function(data) {
         // Gives status report
         fnSetLoadingText("Cleaning Data");
         // Cleans the global data
@@ -82,29 +83,30 @@ OUTPUT:
     None
 */
 function fnCleanGData(gd) {
-    // Grabs the time the data was last updated
-    updateTime = gd["last_updated"];
+    for (var i = 0; i < gd.length; i++) {
+        try {
+            var recLat = gd[i].coordinates[1];
+            var recLong = gd[i].coordinates[0];
 
-    // Removes all of the places too far away
-    $.each(gd["locations"], function(k, v) {
-        // Lat and long of each location
-        var recLat = v["coordinates"]["lat"];
-        var recLong = v["coordinates"]["long"];
-
-        // Makes sure that they're within the safe radius
-        if(distTwoPts(recLat, recLong, userLocation[0], userLocation[1]) <= SAFE_RADIUS) {
-            // Creates a new item
             var parsedItem = {};
 
             // Save lat, long, and number of infected to the item
-            parsedItem["lat"] = v["coordinates"]["lat"];
-            parsedItem["long"] = v["coordinates"]["long"];
-            parsedItem["infected"] = v['latest'];
+            parsedItem["lat"] = recLat;
+            parsedItem["long"] = recLong;
+            parsedItem["infected"] =gd[i].cases;
 
             // Add the item to the list of locations
             relLocs.push(parsedItem);
+        } catch (e) {
+            console.log(gd[i]);
         }
-    });
+    }
+
+    // // Removes all of the places too far away
+    // $.each(gd, function(v) {
+        // Lat and long of each location
+
+    // });
 }
 
 /*
@@ -117,13 +119,15 @@ OUTPUT:
     None
 */
 function fnGetPlaces(category, distance) {
+    // userLocation = [33.687930, -117.777511]
     // Creates an AJAX call to the API
     return $.ajax({
         url: HERE_API,
         type: 'GET',
         data: {
             // Converts from km to meters, which is what the API uses
-            at: `${userLocation[0]},${userLocation[1]};r=${distance*1000}`,
+            in: `${userLocation[0]},${userLocation[1]};r=${distance*1000}`,
+            size: 100,
             cat: category,
             apiKey: PLACES_API_KEY
         },
@@ -164,8 +168,10 @@ function fnCleanPlaces(pd) {
             var distance = distTwoPts(pLatLong[0], pLatLong[1],
                 parseFloat(v2["lat"]), parseFloat(v2["long"]));
 
+
             // Finds the danger level for that given location
             var dl = v2['infected'] * DANGER_MULTIPLER / distance;
+
 
             // Update the danger level for that location
             if(dl > dangerLevel)
@@ -173,7 +179,7 @@ function fnCleanPlaces(pd) {
         });
 
         // If the danger level is low enough
-        if(dangerLevel < dangerCutoff) {
+        if(($("#button-pickSafety")[0].value == SAFETY_LEVELS[2][1]) || (dangerLevel < dangerCutoff)) {
             // Save the important info from the item
             var parsedItem = {};
             parsedItem["distance"] = (v1['distance']/1000);

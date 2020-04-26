@@ -13,13 +13,13 @@ OUTPUT:
 */
 function setup() {
     // Creates the dropdown for safety levels
-    fnCreateDropdown("input", SAFETY_LEVELS, "pickSafety", DISPLAY_TEXT);
+    fnCreateDropdown("input", SAFETY_LEVELS, "pickSafety", DISPLAY_TEXT, DESCR_TEXT);
     // Creates the dropdown for location types
-    fnCreateDropdown("input", LOCATION_TYPES, "pickType", DISPLAY_TEXT);
+    fnCreateDropdown("input", LOCATION_TYPES, "pickType", DISPLAY_TEXT, DESCR_TEXT);
     // Creates the dropdown for unit selection
-    fnCreateDropdown("input", UNIT_MULTIPLIERS, "pickMetric", DISPLAY_TEXT);
+    fnCreateDropdown("input", UNIT_MULTIPLIERS, "pickMetric", DISPLAY_TEXT, DESCR_TEXT);
     // Creates the dropdown for sorting
-    fnCreateDropdown("input", ORDER_BY, "pickOrder", DISPLAY_TEXT);
+    fnCreateDropdown("input", ORDER_BY, "pickOrder", DISPLAY_TEXT, DESCR_TEXT);
     // Creates the search bar and button
     fnCreateSearchBar("input", "pickDistance", DISTANCE_MESSAGE);
 }
@@ -33,6 +33,7 @@ OUTPUT:
     None
 */
 function fnSetParentText(event) {
+
     // Finds the parent of the event
     var parent = event.target.parentElement.parentElement
     // Finds the target of the event
@@ -41,6 +42,11 @@ function fnSetParentText(event) {
     target.innerHTML = event.target.innerHTML;
     // Sets the value
     target.setAttribute("value", event.target.getAttribute("value"));
+
+    //  Creates an left arrow icon for the buttons
+    var icon = document.createElement("i");
+    icon.setAttribute("class", "fas fa-chevron-left icon");
+    target.appendChild(icon);
 
     // If there are results in safeLocs
     if(safeLocs != []) {
@@ -67,6 +73,7 @@ OUTPUT:
     None
 */
 function fnAllSearchResults(inputArray) {
+
     // Sort the array on the function chosen by the pickOrder dropdown
     safeLocs.sort(function(a,b) {
         return sortingFunctions(a,b,Number($('#button-pickOrder')[0].value))
@@ -92,7 +99,7 @@ INPUT:
 OUTPUT:
     None
 */
-function fnCreateDropdown(mainParent, inputList, id, textSource) {
+function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
     // Gets the parent container
     var container = $("#" + mainParent)[0];
 
@@ -121,6 +128,10 @@ function fnCreateDropdown(mainParent, inputList, id, textSource) {
     var title = document.createElement('h2');
     title.innerHTML = textSource[id] + ":";
 
+    // Creates description for each section
+    var descr = document.createElement('h3');
+    descr.innerHTML = textDescr[id];
+
     // Creates a button within the outer div
     var button = document.createElement('button');
     button.classList += "btn btn-secondary dropdown-toggle";
@@ -132,22 +143,54 @@ function fnCreateDropdown(mainParent, inputList, id, textSource) {
     button.setAttribute("value", inputList[0][1]);
     button.innerHTML = inputList[0][0];
 
-    // Creates a dropdown menu within the outer div
-    var menu = document.createElement('div');
-    menu.classList += "dropdown-menu";
-    button.setAttribute("aria-labelledby", button.id);
+    //  Creates an left arrow icon for the buttons
+    var icon = document.createElement("i");
+    icon.setAttribute("class", "fas fa-chevron-left icon");
+    button.appendChild(icon);
 
-    // Populates the menu with dropdown options
-    for (var i = 0; i < inputList.length; i++) {
-        var a = document.createElement('a');
-        a.classList += "dropdown-item";
-        a.setAttribute("aria-expanded", "false");
-        a.setAttribute("value", inputList[i][1]);
-        a.addEventListener("click", fnSetParentText);
-        a.innerHTML = inputList[i][0];
 
-        // Adds as a child to the parent
-        menu.appendChild(a);
+    //  Set a scroll bar for pickType only
+    if (id == "pickType")
+    {
+      // Creates a dropdown menu within the outer div
+      var menu = document.createElement('select');
+      menu.setAttribute("size", 10);
+      menu.classList += "dropdown-menu";
+      button.setAttribute("aria-labelledby", button.id);
+
+      // Populates the menu with dropdown options
+      for (var i = 0; i < inputList.length; i++) {
+          var a = document.createElement('option'); //  must be option to work
+          a.classList += "dropdown-item";
+          a.setAttribute("aria-expanded", "false");
+          a.setAttribute("value", inputList[i][1]);
+          a.addEventListener("click", fnSetParentText);
+          a.innerHTML = inputList[i][0];
+
+          // Adds as a child to the parent
+          menu.appendChild(a);
+      }
+    }
+
+    else
+    {
+      // Creates a dropdown menu within the outer div
+      var menu = document.createElement('div');
+      menu.classList += "dropdown-menu";
+      button.setAttribute("aria-labelledby", button.id);
+
+      // Populates the menu with dropdown options
+      for (var i = 0; i < inputList.length; i++) {
+          var a = document.createElement('a');
+          a.classList += "dropdown-item";
+          a.setAttribute("aria-expanded", "false");
+          a.setAttribute("value", inputList[i][1]);
+          a.addEventListener("click", fnSetParentText);
+          a.innerHTML = inputList[i][0];
+
+          // Adds as a child to the parent
+          menu.appendChild(a);
+      }
     }
 
     // Adding as children
@@ -155,10 +198,13 @@ function fnCreateDropdown(mainParent, inputList, id, textSource) {
     dropdown.appendChild(menu);
 
     btnInstruction.appendChild(title);
+    btnInstruction.appendChild(descr);
     btnButton.appendChild(dropdown);
+
 
     row.appendChild(btnInstruction);
     row.appendChild(btnButton);
+
 
     displayGrid.appendChild(row);
 
@@ -176,6 +222,7 @@ OUTPUT:
     None
 */
 function fnCreateSearchBar(mainParent, main_id, message) {
+
     // Gets the main container
     var container = $("#" + mainParent)[0];
 
@@ -206,6 +253,10 @@ function fnCreateSearchBar(mainParent, main_id, message) {
     searchButton.innerHTML = "Search";
     searchButton.onclick = fnSearchSafeLocs;
 
+    var icon = document.createElement("i");
+    icon.setAttribute("class", "fas fa-search icon");
+    searchButton.appendChild(icon);
+
     // Append everything together
     innerContainer.appendChild(inputBar);
     innerContainer.appendChild(searchButton);
@@ -221,6 +272,8 @@ OUTPUT:
     None
 */
 function fnSearchSafeLocs() {
+
+
     // Creates a list of safe locations
     safeLocs = []
 
@@ -242,7 +295,7 @@ function fnSearchSafeLocs() {
        }
 
     // Convert the distance to the appropriate units
-    distance = $("#pickDistance")[0].value*$("#pickMetric")[0].value;
+    distance = $("#pickDistance")[0].value*$("#pickMetric")[0].children[0].value;
 
     // Get the value of the dropdowns
     searchCriteria = $("#button-pickType")[0].value;
@@ -306,6 +359,7 @@ OUTPUT:
     None
 */
 function fnToggle(e) {
+
     // The parent element that called it
     var parent = e.target.parentNode.parentNode.parentNode;
     // The element that should be expanding
@@ -318,6 +372,12 @@ function fnToggle(e) {
     } else {
         expanding.style.display = "none";
     }
+}
+
+//  Will toggle a subCircle to full or empty
+function fnToggleCirc(e, super_dangerous) {
+  $(e).toggleClass("subCircle subCircle-full");
+  if (super_dangerous) $(e).toggleClass("super-dangerous");
 }
 
 /*
@@ -336,7 +396,7 @@ function fnFormatSearchResult(mainParent, inputArray) {
     // Creates a div to hold the search result
     var searchResult = document.createElement("div");
     searchResult.classList += "searchResult";
-    searchResult.onclick = fnToggle;
+    // searchResult.onclick = fnToggle // toggle for seeing map links
 
     // Creates a header for the search result
     // Bootstrap grid
@@ -345,12 +405,45 @@ function fnFormatSearchResult(mainParent, inputArray) {
 
     // Creates a bootstrap row
     var row = document.createElement("div");
-    row.classList += "row";
+    row.classList += "searchRow";
 
     // Creates a column div and sets the name of the location
     var srName = document.createElement("div");
     srName.classList += "col sub-searchResult sr-name";
     srName.innerHTML = inputArray["name"];
+
+    //  ------------------------------------------------------------------------
+    //  Creats a column div for the circles
+    var srCircle = document.createElement("div");
+    srCircle.classList += "circle";
+
+    //  sub circles for the circle Collumn
+    var subCircle = document.createElement("div");
+    subCircle.classList += "subCircle";
+
+    //  create 5 sub circles
+    srCircle.appendChild(subCircle);
+    srCircle.appendChild(subCircle.cloneNode(true));
+    srCircle.appendChild(subCircle.cloneNode(true));
+    srCircle.appendChild(subCircle.cloneNode(true));
+    srCircle.appendChild(subCircle.cloneNode(true));
+
+    //  save parent of the sub circles
+    var children = srCircle.childNodes;
+    var danger = inputArray["danger"].toFixed(1);
+    console.log(danger)
+
+    //  Error check
+    if (danger > 5)
+    {
+      console.log("ERROR! Danger is greater than 5. It should be inclusively between 0-5.");
+    }
+
+
+    for(let i = 0; i < Math.min(danger, 5); i++)
+      fnToggleCirc(children[i], (danger > SAFETY_LEVELS[2][1]));
+
+    //  ------------------------------------------------------------------------
 
     // Creates a column div and sets the distance to the location
     var srDistance = document.createElement("div");
@@ -358,10 +451,11 @@ function fnFormatSearchResult(mainParent, inputArray) {
 
     // Finds the units being used and displays in the correct units
     var multiplier = Number($("#button-pickMetric")[0].getAttribute("value"));
-    var unit = $("#button-pickMetric")[0].innerHTML;
+    var unit = $("#button-pickMetric")[0].textContent;
 
     srDistance.innerHTML = (inputArray["distance"] * multiplier).toFixed(1) + " " + unit;
 
+    ////////////////////////////////////////////////////////////////////////////
     // Creates the expanded result
     var expandedResult = document.createElement("div");
     expandedResult.classList += "container expanded-result";
@@ -375,25 +469,33 @@ function fnFormatSearchResult(mainParent, inputArray) {
     // Create a link to google maps
     var mapsLink = document.createElement("div");
     mapsLink.classList += "sub-expanded-result maps-link";
+    ////////////////////////////////////////////////////////////////////////////
+
+    //  Link Collumn
+    var srLink = document.createElement("div");
+    srLink.classList += "col-3 sub-searchResult sr-link";
 
     var link = document.createElement("a");
     link.setAttribute("href", inputArray["link"]);
     link.setAttribute("target", "_blank");
-    link.innerHTML = "Open in Google Maps";
+    link.setAttribute("class", "fas fa-link icon");
 
     // Append everything together
     mapsLink.appendChild(link);
+    srLink.appendChild(link);
 
-    expandedResult.appendChild(info);
-    expandedResult.appendChild(mapsLink);
+    //expandedResult.appendChild(info);
+    //expandedResult.appendChild(mapsLink);
 
     row.appendChild(srName);
+    row.appendChild(srCircle);
     row.appendChild(srDistance);
+    row.appendChild(srLink);
 
     containerHeader.appendChild(row);
 
     searchResult.appendChild(containerHeader);
-    searchResult.appendChild(expandedResult);
+    //searchResult.appendChild(expandedResult);
 
     container.appendChild(searchResult);
 }
