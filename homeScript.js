@@ -295,7 +295,7 @@ function fnSearchSafeLocs() {
        }
 
     // Convert the distance to the appropriate units
-    distance = $("#pickDistance")[0].value*$("#pickMetric")[0].value;
+    distance = $("#pickDistance")[0].value*$("#pickMetric")[0].children[0].value;
 
     // Get the value of the dropdowns
     searchCriteria = $("#button-pickType")[0].value;
@@ -375,9 +375,9 @@ function fnToggle(e) {
 }
 
 //  Will toggle a subCircle to full or empty
-function fnToggleCirc(e) {
-
+function fnToggleCirc(e, super_dangerous) {
   $(e).toggleClass("subCircle subCircle-full");
+  if (super_dangerous) $(e).toggleClass("super-dangerous");
 }
 
 /*
@@ -431,6 +431,7 @@ function fnFormatSearchResult(mainParent, inputArray) {
     //  save parent of the sub circles
     var children = srCircle.childNodes;
     var danger = inputArray["danger"].toFixed(1);
+    console.log(danger)
 
     //  Error check
     if (danger > 5)
@@ -439,10 +440,9 @@ function fnFormatSearchResult(mainParent, inputArray) {
     }
 
 
-    for(let i = 0; i < danger; i++)
-    {
-      fnToggleCirc(children[i]);
-    }
+    for(let i = 0; i < Math.min(danger, 5); i++)
+      fnToggleCirc(children[i], (danger > SAFETY_LEVELS[2][1]));
+
     //  ------------------------------------------------------------------------
 
     // Creates a column div and sets the distance to the location

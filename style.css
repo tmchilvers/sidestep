@@ -313,6 +313,7 @@ a.fas.fa-link {
   border-radius: 50%;
   height: 2vmin;
   margin: 0.2vmin;
+  background-color: black;
 }
 
 .subCircle {
@@ -321,6 +322,11 @@ a.fas.fa-link {
     border-radius: 50%;
     height: 2vmin;
     margin: 0.2vmin;
+}
+
+.super-dangerous {
+    border-color: #FF4242;
+    background-color: #FF4242;
 }
 
 .sr-distance:before {
