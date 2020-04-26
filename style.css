@@ -9,7 +9,7 @@ Pallet
 
 .main {
     text-align: center;
-    max-width: 800px;
+    max-width: 900px;
 }
 
 #title {
@@ -55,11 +55,13 @@ h3 {
 
 }
 
+
 body {
-    background-color: #ffb764; /* old orange: #EC8922s */
-    max-width: 800px;
+    background-color: #fcaf57; /* old orange: #EC8922s */
+    max-width: 900px;
     margin-left: auto;
     margin-right: auto;
+
 }
 
 .center {

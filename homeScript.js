@@ -374,6 +374,7 @@ function fnToggle(e) {
     }
 }
 
+//  Will toggle a subCircle to full or empty
 function fnToggleCirc(e) {
 
   $(e).toggleClass("subCircle subCircle-full");
@@ -430,10 +431,18 @@ function fnFormatSearchResult(mainParent, inputArray) {
     //  save parent of the sub circles
     var children = srCircle.childNodes;
     var danger = inputArray["danger"].toFixed(1);
-    console.log(danger);
-    fnToggleCirc(children[0]);
-    fnToggleCirc(children[0]);
 
+    //  Error check
+    if (danger > 5)
+    {
+      console.log("ERROR! Danger is greater than 5. It should be inclusively between 0-5.");
+    }
+
+
+    for(let i = 0; i < danger; i++)
+    {
+      fnToggleCirc(children[i]);
+    }
     //  ------------------------------------------------------------------------
 
     // Creates a column div and sets the distance to the location
