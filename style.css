@@ -9,7 +9,7 @@ Pallet
 
 .main {
     text-align: center;
-    max-width: 750px;
+    max-width: 850px;
 }
 
 #title {
@@ -57,7 +57,7 @@ h3 {
 
 body {
     background-color: #fcaf57; /* old orange: #EC8922s */
-    max-width: 750px;
+    max-width: 850px;
     margin-left: auto;
     margin-right: auto;
 
@@ -158,7 +158,11 @@ hr.main {
     transform-origin: top;
     position: absolute;
     margin-left: 11px;
-    -webkit-appearance: none;
+
+}
+
+select, option {
+  -webkit-appearance: none;
 }
 
 .dropdown-toggle, #searchButton {
@@ -377,6 +381,10 @@ a.fas.fa-link {
   color: black;
   transition: 0.3s;
   padding: 1vmin 1vmin 1vmin 1vmin;
+}
+
+a {
+  transition: 0.3s;
 }
 
 a:active {
