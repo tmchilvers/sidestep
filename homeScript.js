@@ -24,10 +24,15 @@ function setup() {
     fnCreateSearchBar("input", "pickDistance", DISTANCE_MESSAGE);
 }
 
+function fnSetTrue(event)
+{
+  event.target.setAttribute("selected", "true");
+}
 
 function fnSetTextSafari (inputList) {
   var items = document.getElementsByClassName("dropdown-item");
 
+  console.log("HERE");
   var i = 0;
   for (i = 0; i < inputList.length; i++) {
     if(items[i].getAttribute("selected") == "true")
@@ -225,7 +230,7 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
           a.setAttribute("selected", "false");
           a.setAttribute("aria-expanded", "false");
           a.setAttribute("value", inputList[i][1]);
-          a.addEventListener("click", fnSetParentText);
+          a.addEventListener("click", fnSetTrue);
           a.innerHTML = inputList[i][0];
 
           // Adds as a child to the parent
