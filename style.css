@@ -163,8 +163,6 @@ hr.main {
 
 select, option {
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
 }
 
 .dropdown-toggle, #searchButton {
