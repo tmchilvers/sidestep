@@ -24,6 +24,8 @@ function setup() {
     fnCreateSearchBar("input", "pickDistance", DISTANCE_MESSAGE);
 }
 
+
+//  ============================================================================
 function fnSetTrue(event)
 {
   event.target.setAttribute("selected", "true");
@@ -77,6 +79,7 @@ function fnSetTextSafari (inputList) {
   }
   items[i].setAttribute("selected","false");
 }
+//  ============================================================================
 
 /*
 DESC:
@@ -230,7 +233,8 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
           a.setAttribute("selected", "false");
           a.setAttribute("aria-expanded", "false");
           a.setAttribute("value", inputList[i][1]);
-          a.addEventListener("click", fnSetTrue);
+          a.addEventListener("click", fnSetParentText);
+          //a.addEventListener("click", fnSetTrue);
           a.innerHTML = inputList[i][0];
 
           // Adds as a child to the parent
