@@ -26,14 +26,13 @@ function setup() {
 
 
 function fnSetTextSafari (inputList) {
-  console.log("onChange");
   var items = document.getElementsByClassName("dropdown-item");
 
   var i = 0;
   for (i = 0; i < inputList.length; i++) {
     if(items[i].getAttribute("selected") == "true")
     {
-      items[i].click();
+      //items[i].click();
       console.log(items[i].innerHTML);
 
 
@@ -44,6 +43,9 @@ function fnSetTextSafari (inputList) {
       // Sets the inner html
       target.innerHTML = items[i].innerHTML;
       // Sets the value
+
+      console.log(target);
+
       target.setAttribute("value", items[i].getAttribute("value"));
 
       //  Creates an left arrow icon for the buttons
@@ -203,7 +205,7 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
     {
       // Creates a dropdown menu within the outer div
       var menu = document.createElement('select');
-      menu.setAttribute("onChange", "fnSetTextSafari(LOCATION_TYPES)")
+      menu.setAttribute("onblur", "fnSetTextSafari(LOCATION_TYPES)")
       menu.setAttribute("size", 10);
       menu.classList += "dropdown-menu";
       button.setAttribute("aria-labelledby", button.id);
