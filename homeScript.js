@@ -24,6 +24,63 @@ function setup() {
     fnCreateSearchBar("input", "pickDistance", DISTANCE_MESSAGE);
 }
 
+
+//  ============================================================================
+function fnSetTrue(event)
+{
+  event.target.setAttribute("selected", "true");
+}
+
+function fnSetTextSafari (inputList) {
+  var items = document.getElementsByClassName("dropdown-item");
+
+  console.log("HERE");
+  var i = 0;
+  for (i = 0; i < inputList.length; i++) {
+    if(items[i].getAttribute("selected") == "true")
+    {
+      //items[i].click();
+      console.log(items[i].innerHTML);
+
+
+      // Finds the parent of the event
+      var parent = items[i].parentElement.parentElement
+      // Finds the target of the event
+      var target = parent.querySelector('.dropdown-toggle');
+      // Sets the inner html
+      target.innerHTML = items[i].innerHTML;
+      // Sets the value
+
+      console.log(target);
+
+      target.setAttribute("value", items[i].getAttribute("value"));
+
+      //  Creates an left arrow icon for the buttons
+      var icon = document.createElement("i");
+      icon.setAttribute("class", "fas fa-chevron-left icon");
+      target.appendChild(icon);
+
+      // If there are results in safeLocs
+      if(safeLocs != []) {
+          // Clear the results
+          fnClearResults();
+
+          // If the sender is one of the following
+          if(parent.id != "pickSafety" && parent.id != "pickType"){
+              // Sort and populate the search results
+              fnAllSearchResults(safeLocs);
+          // Otherwise, empty the safe locations
+          } else {
+              safeLocs = [];
+          }
+      }
+      break;
+    }
+  }
+  items[i].setAttribute("selected","false");
+}
+//  ============================================================================
+
 /*
 DESC:
     Sets the text of the dropdown button to the selected value
@@ -33,6 +90,8 @@ OUTPUT:
     None
 */
 function fnSetParentText(event) {
+    //  set the event element to true for Safari
+    event.target.setAttribute("selected","true");
 
     // Finds the parent of the event
     var parent = event.target.parentElement.parentElement
@@ -154,17 +213,28 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
     {
       // Creates a dropdown menu within the outer div
       var menu = document.createElement('select');
+      menu.setAttribute("onblur", "fnSetTextSafari(LOCATION_TYPES)")
       menu.setAttribute("size", 10);
       menu.classList += "dropdown-menu";
       button.setAttribute("aria-labelledby", button.id);
+
+      var opt = document.createElement('option');
+      opt.classList += "default";
+      opt.setAttribute("value", "");
+      opt.setAttribute("selected", "");
+      opt.setAttribute("disabled", "");
+      opt.innerHTML = "Please select...";
+      menu.appendChild(opt);
 
       // Populates the menu with dropdown options
       for (var i = 0; i < inputList.length; i++) {
           var a = document.createElement('option'); //  must be option to work
           a.classList += "dropdown-item";
+          a.setAttribute("selected", "false");
           a.setAttribute("aria-expanded", "false");
           a.setAttribute("value", inputList[i][1]);
           a.addEventListener("click", fnSetParentText);
+          //a.addEventListener("click", fnSetTrue);
           a.innerHTML = inputList[i][0];
 
           // Adds as a child to the parent
