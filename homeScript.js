@@ -26,6 +26,7 @@ function setup() {
 
 
 function fnSetTextSafari (inputList) {
+  console.log("onChange");
   var items = document.getElementsByClassName("dropdown-item");
 
   var i = 0;
@@ -202,7 +203,7 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
     {
       // Creates a dropdown menu within the outer div
       var menu = document.createElement('select');
-      menu.setAttribute("onblur", "fnSetTextSafari(LOCATION_TYPES)")
+      menu.setAttribute("onChange", "fnSetTextSafari(LOCATION_TYPES)")
       menu.setAttribute("size", 10);
       menu.classList += "dropdown-menu";
       button.setAttribute("aria-labelledby", button.id);
