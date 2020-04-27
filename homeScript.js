@@ -24,6 +24,21 @@ function setup() {
     fnCreateSearchBar("input", "pickDistance", DISTANCE_MESSAGE);
 }
 
+
+function fnSetTextSafari (inputList) {
+  var items = document.getElementsByClassName("dropdown-item");
+
+  var i = 0;
+  for (i = 0; i < inputList.length; i++) {
+    if(items[i].getAttribute("selected") == "true")
+    {
+      items[i].click();
+      break;
+    }
+  }
+  items[i].setAttribute("selected","false");
+}
+
 /*
 DESC:
     Sets the text of the dropdown button to the selected value
@@ -33,6 +48,8 @@ OUTPUT:
     None
 */
 function fnSetParentText(event) {
+    //  set the event element to true for Safari
+    event.target.setAttribute("selected","true");
 
     // Finds the parent of the event
     var parent = event.target.parentElement.parentElement
@@ -154,6 +171,7 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
     {
       // Creates a dropdown menu within the outer div
       var menu = document.createElement('select');
+      menu.setAttribute("onblur", "fnSetTextSafari(LOCATION_TYPES)")
       menu.setAttribute("size", 10);
       menu.classList += "dropdown-menu";
       button.setAttribute("aria-labelledby", button.id);
@@ -170,6 +188,7 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
       for (var i = 0; i < inputList.length; i++) {
           var a = document.createElement('option'); //  must be option to work
           a.classList += "dropdown-item";
+          a.setAttribute("selected", "false");
           a.setAttribute("aria-expanded", "false");
           a.setAttribute("value", inputList[i][1]);
           a.addEventListener("click", fnSetParentText);
