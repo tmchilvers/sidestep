@@ -1,5 +1,23 @@
-# sidestep
+# Sidestep
 A website to inform users of locations to meet that are a safe distance from known covid-19 cases.
+
+## Contributions
+### Matt Raymond
+- HTTPS registration
+- Custom domain name
+- Changing coronavirus APIs
+- Initial, utilitarian UI implimentation
+- UI redesign
+- HERE API implimentation
+- Location services implimentation
+
+### Tristan Chilvers
+- Finding APIs
+- Initial coronavirus API implimentation
+- Danger level calculation
+- Implimented UI redesign
+- Bug fixes for different browsers
+- Website hosting
 
 ## Changelog
 - Replaced Geolocator with built-in HTML5 one
@@ -31,16 +49,13 @@ A website to inform users of locations to meet that are a safe distance from kno
 - Adjusted responsive UI
 
 ## ToDo
-- Potentially subtract the number of cured from the overall infected
-    - Maybe not a good idea until later because it will basically double the api call time unless run via parallel threads
-- Add `Help` page
-- Add `About` page
+- Potentially subtract the number of cured from the overall infected to provide a more accurate danger level
 
 ## Resources
-- https://github.com/ExpDev07/coronavirus-tracker-api
-- https://www.w3schools.com/html/html5_geolocation.asp
-- https://developer.here.com/documentation/examples/rest/places/explore-popular-places-category
-- Google maps
+- [CoViD-19 API](https://coronadatascraper.com)
+- [HTML5 Geolocation](https://www.w3schools.com/html/html5_geolocation.asp)
+- [HERE Explore API](https://developer.here.com/documentation/examples/rest/places/explore-popular-places-category)
+- [Google Maps)(https://maps.google.com)
     - `https://www.google.com/maps/search/place+name/@lat,long`  
 - `Bootstrap`
 - `jQuery`
