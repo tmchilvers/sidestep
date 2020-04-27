@@ -162,9 +162,9 @@ hr.main {
 }
 
 select, option {
-/*  -webkit-appearance: none;
+  -webkit-appearance: none;
   -moz-appearance: none;
-  appearance: none;*/
+  appearance: none;
 }
 
 .dropdown-toggle, #searchButton {
