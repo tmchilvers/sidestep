@@ -158,6 +158,14 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
       menu.classList += "dropdown-menu";
       button.setAttribute("aria-labelledby", button.id);
 
+      var opt = document.createElement('option');
+      opt.classList += "default";
+      opt.setAttribute("value", "");
+      opt.setAttribute("selected", "");
+      opt.setAttribute("disabled", "");
+      opt.innerHTML = "Please select...";
+      menu.appendChild(opt);
+
       // Populates the menu with dropdown options
       for (var i = 0; i < inputList.length; i++) {
           var a = document.createElement('option'); //  must be option to work
