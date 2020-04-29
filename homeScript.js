@@ -207,7 +207,6 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
     icon.setAttribute("class", "fas fa-chevron-left icon");
     button.appendChild(icon);
 
-
     //  Set a scroll bar for pickType only
     if (id == "pickType")
     {
@@ -216,15 +215,15 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
       menu.setAttribute("onblur", "fnSetTextSafari(LOCATION_TYPES)")
       menu.setAttribute("size", 10);
       menu.classList += "dropdown-menu";
-      button.setAttribute("aria-labelledby", button.id);
+      // button.setAttribute("aria-labelledby", button.id);
 
-      var opt = document.createElement('option');
-      opt.classList += "default";
-      opt.setAttribute("value", "");
-      opt.setAttribute("selected", "");
-      opt.setAttribute("disabled", "");
-      opt.innerHTML = "Please select...";
-      menu.appendChild(opt);
+      // var opt = document.createElement('option');
+      // opt.classList += "default";
+      // opt.setAttribute("value", "");
+      // opt.setAttribute("selected", "");
+      // opt.setAttribute("disabled", "");
+      // opt.innerHTML = "Please select...";
+      // menu.appendChild(opt);
 
       // Populates the menu with dropdown options
       for (var i = 0; i < inputList.length; i++) {
