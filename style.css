@@ -501,11 +501,22 @@ p.about b {
   font-weight: bold;
 }
 
-a:link, a:visited {
+a:link.text, a:visited.text {
     text-decoration: underline;
 }
 
-a:hover, a:active {
+a:hover.text, a:active.text {
     color: #fcaf57;
     text-decoration: underline;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .22);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }
