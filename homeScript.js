@@ -207,42 +207,42 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
     icon.setAttribute("class", "fas fa-chevron-left icon");
     button.appendChild(icon);
 
-    //  Set a scroll bar for pickType only
-    if (id == "pickType")
-    {
-      // Creates a dropdown menu within the outer div
-      var menu = document.createElement('select');
-      menu.setAttribute("onblur", "fnSetTextSafari(LOCATION_TYPES)")
-      menu.setAttribute("size", 10);
-      menu.classList += "dropdown-menu";
-      // button.setAttribute("aria-labelledby", button.id);
-
-      // var opt = document.createElement('option');
-      // opt.classList += "default";
-      // opt.setAttribute("value", "");
-      // opt.setAttribute("selected", "");
-      // opt.setAttribute("disabled", "");
-      // opt.innerHTML = "Please select...";
-      // menu.appendChild(opt);
-
-      // Populates the menu with dropdown options
-      for (var i = 0; i < inputList.length; i++) {
-          var a = document.createElement('option'); //  must be option to work
-          a.classList += "dropdown-item";
-          a.setAttribute("selected", "false");
-          a.setAttribute("aria-expanded", "false");
-          a.setAttribute("value", inputList[i][1]);
-          a.addEventListener("click", fnSetParentText);
-          //a.addEventListener("click", fnSetTrue);
-          a.innerHTML = inputList[i][0];
-
-          // Adds as a child to the parent
-          menu.appendChild(a);
-      }
-    }
-
-    else
-    {
+    // //  Set a scroll bar for pickType only
+    // if (id == "pickType")
+    // {
+    //   // Creates a dropdown menu within the outer div
+    //   var menu = document.createElement('select');
+    //   menu.setAttribute("onblur", "fnSetTextSafari(LOCATION_TYPES)")
+    //   menu.setAttribute("size", 10);
+    //   menu.classList += "dropdown-menu";
+    //   // button.setAttribute("aria-labelledby", button.id);
+    //
+    //   // var opt = document.createElement('option');
+    //   // opt.classList += "default";
+    //   // opt.setAttribute("value", "");
+    //   // opt.setAttribute("selected", "");
+    //   // opt.setAttribute("disabled", "");
+    //   // opt.innerHTML = "Please select...";
+    //   // menu.appendChild(opt);
+    //
+    //   // Populates the menu with dropdown options
+    //   for (var i = 0; i < inputList.length; i++) {
+    //       var a = document.createElement('option'); //  must be option to work
+    //       a.classList += "dropdown-item";
+    //       a.setAttribute("selected", "false");
+    //       a.setAttribute("aria-expanded", "false");
+    //       a.setAttribute("value", inputList[i][1]);
+    //       a.addEventListener("click", fnSetParentText);
+    //       //a.addEventListener("click", fnSetTrue);
+    //       a.innerHTML = inputList[i][0];
+    //
+    //       // Adds as a child to the parent
+    //       menu.appendChild(a);
+    //   }
+    // }
+    //
+    // else
+    // {
       // Creates a dropdown menu within the outer div
       var menu = document.createElement('div');
       menu.classList += "dropdown-menu";
@@ -260,7 +260,7 @@ function fnCreateDropdown(mainParent, inputList, id, textSource, textDescr) {
           // Adds as a child to the parent
           menu.appendChild(a);
       }
-    }
+    // }
 
     // Adding as children
     dropdown.appendChild(button);
