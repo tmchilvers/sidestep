@@ -1,6 +1,10 @@
 # [Sidestep](https://sidestep.app)
 A website to inform users of locations to meet that are a safe distance from known covid-19 cases.
 
+## About
+- [Sidestep "About" Page](https://sidestep.app/about.html)
+- [Poster](https://sidestep.app/Poster.pdf)
+
 ## Contributions
 ### Matt Raymond
 - HTTPS registration
@@ -8,7 +12,7 @@ A website to inform users of locations to meet that are a safe distance from kno
 - Changing coronavirus APIs
 - Initial, utilitarian UI implimentation
 - UI redesign
-- HERE API implimentation
+- HERE API implimentationÂ
 - Location services implimentation
 
 ### Tristan Chilvers
