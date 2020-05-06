@@ -3,7 +3,7 @@ A website to inform users of locations to meet that are a safe distance from kno
 
 ## About
 - [Sidestep "About" Page](https://sidestep.app/about.html)
-- [Conference Poster](https://github.com/tmchilvers/tmchilvers.github.io/resources/blob/master/Poster.pdf)
+- [Conference Poster](https://github.com/tmchilvers/tmchilvers.github.io/blob/master/resources/Poster.pdf)
 
 ## Contributions
 ### Matt Raymond
