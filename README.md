@@ -1,22 +1,21 @@
 # [Sidestep](https://sidestep.app)
-A website to inform users of locations to meet that are a safe distance from known covid-19 cases.
-
+A website that helps users find safe locations to eat/shop/etc. during the ongoing covid-19 pandemic.
 ## About
 - [Sidestep "About" Page](https://sidestep.app/about.html)
 - [Conference Poster](https://github.com/tmchilvers/tmchilvers.github.io/blob/master/resources/Poster.pdf)
 
 ## Usage
-For general information, please refer to [sidestep.app/about.html](https://sidestep.app/about.html), or click the link at the bottom of the hom page.  
+For general information, please refer to [sidestep.app/about.html](https://sidestep.app/about.html), or click the link at the bottom of the home page.  
 ## Installing/Compiling/Running
-Since this project is web-based, there is no installation, compilation, or running needed. Simply enter [sidestep.app](https://sidestep.app) into your browser and the page should load fine. However, this website does require javascript and location services, so if you are experiencing trouble, it is likely that one of those is blocked. The basics are outlined below, and helpful links are included on the Sidestep "About" page.
+Since this project is web-based, there is no installation, compilation, or running needed. Simply enter [sidestep.app](https://sidestep.app) into your browser, and the page should load fine. However, this website does require javascript and location services, so if you are experiencing trouble, it is likely that one of those is blocked. The basics are outlined below, and helpful links are included on the Sidestep "About" page.
 - **Javascript:** If the page loads and remains almost totally blank, it is likely that javascript is blocked.
 - **Location Services:** If the page loads but locations take forever to load, then it is likely that location services is blocked by your browser.
 
 ## Basic Walkthrough
-Hopefully the UI is self explanatory, but if not, here is a step by step guide to using the site:
+Hopefully, the UI is self-explanatory, but if not, here is a step by step guide to using the site:
 1. Navigate to https://sidestep.app
 2. Ensure that javascript and location services are enabled, as mentioned above
-3. At `Safety Level`, choose the amount of risk that you're willing to take. This is the cuttoff for risk, meaning that lower danger levels will remove results that are considered too dangerous. Changing your selection here will clear the previous search results.
+3. At `Safety Level`, choose the amount of risk that you're willing to take. This is the cutoff for risk, meaning that lower-danger levels will remove results that are considered too dangerous. Changing your selection here will clear the previous search results.
 4. At `Category`, select the type of business you're looking for. This will filter the locations around you, so you only get that type of business. Changing your selection here will clear the previous search results.
 5. At `Units`, choose whether you want to use `km` (metric) or `miles` (imperial) units for distances. Changing this will not clear your search results.
 6. At `Sorting`, choose the way you want the results to be sorted
@@ -24,8 +23,8 @@ Hopefully the UI is self explanatory, but if not, here is a step by step guide t
     - `Furthest`: The locations will be displayed with the farthest away at the top and closest at the bottom. 
     - `Safest`: The locations will be displayed with the safest at the top and most dangerous at the bottom.
     - `Dangerous`: The locations will be displayed with the safest at the top and most dangerous at the bottom.
-    - `Reverse Alphabetical`: Self-explanetory
-    - `Alphabetical`: Self-explanetory
+    - `Reverse Alphabetical`: Self-explanatory
+    - `Alphabetical`: Self-explanatory
 7. At `Search Radius`, enter the farthest distance you are willing to search for businesses. The units will be in whatever you chose in step 5.
 8. Press `Search` to view your search results.
 
@@ -44,24 +43,24 @@ Each search result will be presented on a small card. This card will have the fo
 3. A vertical bar that serves no purpose other than aesthetics
 4. The distance from your location to this business
 5. A link to the business in Google Maps
-    - This link works most of the time, but not always. We're not sure why, but we think it's because it opens a link in google maps to a specific lat and long with a business name, but sometimes Google Maps doesn't know the specific lat and long of that business, so it goes to the lat and long without linking it to a business.
+    - This link works most of the time, but not always. We're not sure why, but we think it's because it opens a link in google maps to specific lat and long with a business name, but sometimes Google Maps doesn't know the specific lat and long of that business, so it goes to the lat and long without linking it to a business.
 
 ## Contributions
 ### Matt Raymond
 - HTTPS registration
 - Custom domain name
 - Changing coronavirus APIs
-- Initial, utilitarian UI implimentation
+- Initial, utilitarian UI implementation
 - UI redesign
-- HERE API implimentation
-- Location services implimentation
+- HERE API implementation
+- Location services implementation
 - README
 
 ### Tristan Chilvers
 - Finding APIs
-- Initial coronavirus API implimentation
+- Initial coronavirus API implementation
 - Danger level calculation
-- Implimented UI redesign
+- Implemented UI redesign
 - Bug fixes for different browsers
 - Website hosting
 
