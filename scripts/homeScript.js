@@ -34,7 +34,6 @@ function fnSetTrue(event)
 function fnSetTextSafari (inputList) {
   var items = document.getElementsByClassName("dropdown-item");
 
-  console.log("HERE");
   var i = 0;
   for (i = 0; i < inputList.length; i++) {
     if(items[i].getAttribute("selected") == "true")
@@ -457,14 +456,6 @@ function fnFormatSearchResult(mainParent, inputArray) {
     //  save parent of the sub circles
     var children = srCircle.childNodes;
     var danger = inputArray["danger"].toFixed(1);
-    console.log(danger)
-
-    //  Error check
-    if (danger > 5)
-    {
-      console.log("ERROR! Danger is greater than 5. It should be inclusively between 0-5.");
-    }
-
 
     for(let i = 0; i < Math.min(danger, 5); i++)
       fnToggleCirc(children[i], (danger > SAFETY_LEVELS[2][1]));
