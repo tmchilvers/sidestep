@@ -39,8 +39,7 @@ var searchCriteria;
 const PLACES_API_KEY = "T7P7ZUnoaS6UosOf7OKA_WCD5MsH8POrifNjeC8qQeA";
 
 // API url for the coronavirus API
-const CORONA_API = "https://coronavirus-tracker-api.herokuapp.com/confirmed";
-const NEW_CORONA_API = "https://coronadatascraper.com/data.json";
+const CORONA_API = "https://coronadatascraper.com/data.json";
 
 // API url for HERE API
 const HERE_API = "https://places.ls.hereapi.com/places/v1/discover/explore";
@@ -56,7 +55,7 @@ OUTPUT:
 */
 function fnGData(sL, callback) {
     // Grabs data from the coronavirus API
-    return $.getJSON(NEW_CORONA_API, function(data) {
+    return $.getJSON(CORONA_API, function(data) {
         // Gives status report
         fnSetLoadingText("Cleaning Data");
         // Cleans the global data
@@ -101,12 +100,6 @@ function fnCleanGData(gd) {
             console.log(gd[i]);
         }
     }
-
-    // // Removes all of the places too far away
-    // $.each(gd, function(v) {
-        // Lat and long of each location
-
-    // });
 }
 
 /*
@@ -119,7 +112,6 @@ OUTPUT:
     None
 */
 function fnGetPlaces(category, distance) {
-    // userLocation = [33.687930, -117.777511]
     // Creates an AJAX call to the API
     return $.ajax({
         url: HERE_API,
