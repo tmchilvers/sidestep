@@ -1,5 +1,9 @@
 # [Sidestep](https://sidestep.app)
 A website that helps users find safe locations to eat/shop/etc. during the ongoing covid-19 pandemic.
+
+## Link to Online Demo
+👉 [Sidestep](https://sidestep.app/home.html)
+
 ## About
 - [Sidestep "About" Page](https://sidestep.app/about.html)
 - [Conference Poster](https://github.com/tmchilvers/tmchilvers.github.io/blob/master/resources/Poster.pdf)
